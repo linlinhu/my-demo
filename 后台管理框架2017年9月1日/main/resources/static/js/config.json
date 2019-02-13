@@ -1,0 +1,12 @@
+{
+	"gitsubmit" : {
+	 	"connect" : "http://192.168.0.203/api/v3/",
+		"user" : "system.emin",
+		"token" : "zyJCbsvTkm9Y4aA4uGGx"
+	},
+	"jenkins" : {
+	 	"connect" : "http://192.168.0.202:19001/api/json",
+		"user" : "system.emin",
+		"token" : "9e2b6493d3c9a0e4181d13476ad455a6"
+	}
+}

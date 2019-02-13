@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>二维码生成</title>
+		<style>
+			body{
+				background: orange;
+			}
+			.qrcode1 {
+			  width:150px;
+			  height:150px;
+			  background: white;
+			  padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="qrcode1"></div>
+		<div id = 'box'></div>
+		<button onclick="fun()">点击</button>
+		<img src="../images/img_qrcode_logo.png" id="img"/>
+		<img src="http://open.weixin.qq.com/qr/code/?username=gh_0719d28f1c96" />
+		<img src="../images/wine-list-right-hover.png" />
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script src="js/jquery.qrcode.js"></script>
+	<script src="js/utf.js"></script>
+	<!--<script src="js/test.js"></script>-->
+	<!--<script src="js/index.js"></script>-->
+	<script>
+		$('.qrcode1').qrcode({
+			render : "canvas",
+			width: 200,
+			height: 200,
+			text: "www.baidu.com",
+			src: '../images/img_qrcode_logo.png' 
+		});
+		function setSize(){
+			$('.qrcode1 canvas').css({width:"120px","height":"120px"});
+		}
+		setSize();
+		function canvasToImage(canvas){
+		   /* var image = new Image();*/
+		    var type="image/png";
+		    var dataurl= canvas.get(0).toDataURL(type).replace("image/png", "image/octet-stream");//toDataURL是canvas的一个方法，没有用get(0)会报错canvas.tofDataURL is not a function
+		    window.location.href=dataurl;
+		   console.log(dataurl)
+
+		};
+		canvasToImage($('.qrcode1 canvas'))
+
+	</script>
+	<!--<script>
+		function fun(){
+			var html = "<img src = \"../images/img_qrcode_logo.pn\" onerror= \"this.src='../images/pic.jpg'\" />"
+			
+			$('#box').html(html)
+			
+		}
+	</script>-->
+</html>

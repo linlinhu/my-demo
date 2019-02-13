@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ztree</title>
+	<link href="css/awesome.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/zTreeStyle.css"/>
+	
+</head>
+<body>
+<div class="box">
+	<div class="head ztree" id="ztree_1"></div>
+	<div class="head ztree" id="ztree_2"></div>
+</div>
+
+
+	
+
+</body>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.exedit.js"></script>
+<script type="text/javascript">
+function render() {
+	var setting = {
+            view: {
+                showLine: false,
+                showIcon: true,
+                selectedMulti: false,
+                dblClickExpand: false,
+                addDiyDom: addDiyDom,
+                expandSpeed: "slow",//节点展开、折叠时的动画速度
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                beforeClick: beforeClick
+            }
+        };
+
+        var zNodes =[
+            { id:1, pId:0, name:"Folders", open:true},
+            { id:11, pId:1, name:"Inbox"},
+            { id:111, pId:11, name:"Inbox1"},
+            { id:112, pId:111, name:"Inbox2"},
+            { id:113, pId:112, name:"Inbox3"},
+            { id:114, pId:113, name:"Inbox4"},
+            { id:12, pId:1, name:"Junk"},
+            { id:13, pId:1, name:"Drafts"},
+            { id:14, pId:1, name:"Sent"},
+            { id:15, pId:1, name:"Deleted"},
+            { id:3, pId:0, name:"Quick views"},
+            { id:31, pId:3, name:"Documents"},
+            { id:32, pId:3, name:"Photos"}
+        ];
+
+        function addDiyDom(treeId, treeNode) {
+            var spaceWidth = 5;
+            var switchObj = $("#" + treeNode.tId + "_switch"),
+            icoObj = $("#" + treeNode.tId + "_ico");
+            switchObj.remove();
+            icoObj.before(switchObj);
+
+            if (treeNode.level > 1) {
+                var spaceStr = "<span style='display: inline-block;width:" + (spaceWidth * treeNode.level)+ "px'></span>";
+                switchObj.before(spaceStr);
+            }
+        }
+
+        function beforeClick(treeId, treeNode) {
+            if (treeNode.level == 0 ) {
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                zTree.expandNode(treeNode);
+                return false;
+            }
+            return true;
+        }
+
+        var treeObj = $("#ztree_1");
+        $.fn.zTree.init(treeObj, setting, zNodes);
+      
+
+        treeObj.hover(function () {
+        if (!treeObj.hasClass("showIcon")) {
+                treeObj.addClass("showIcon");
+            }
+         }, function() {
+            treeObj.removeClass("showIcon");
+         });
+}
+render();
+
+</script>
+</html>

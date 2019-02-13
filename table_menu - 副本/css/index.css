@@ -1,0 +1,101 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.hide{
+	display: none;
+}
+.bg{
+	position: absolute;
+	right: 0;
+	left: 0;
+
+	width: 60%;
+	height: 350px;
+	margin: 200px auto;
+	padding: 30px;
+
+	font-size: 20px;
+	border:1px solid #c0cdd8;
+	border-radius: 10px;
+}
+.container{
+	width: 75%;
+	height: 300px;
+
+	background-color: #6eb5c0;
+	color: #fff;
+}
+.btn{
+	position: absolute;
+	right: 30px;
+	top:150px;
+
+	height: 40px;
+	width: 40px;
+	
+	border-radius: 100%;
+	text-align: center;
+	line-height: 40px;
+	background-color: #8096a6;
+	color: #fff;
+	cursor: pointer;
+}
+.minus{
+	top:250px;
+}
+.tab-bar{
+	box-sizing: border-box;
+	display: flex;
+	flex-wrap: nowrap;
+}
+.container .tab{
+	box-sizing: border-box;
+	display: flex;
+
+	width: 100%;
+	border:1px solid #fff;
+	justify-content: center;
+
+	line-height: 30px;
+	background: #006c84;
+	cursor: pointer;
+}
+.cover{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
+.tip-form{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+
+	height: 200px;
+	width: 300px;
+	margin: auto;
+
+	background-color: #ff9d9b;
+	border-radius: 5px;
+	color: #fff;
+	text-align: center;
+	line-height: 30px;
+}
+.tip-form input{
+	height: 24px;
+}
+.tip-form P{
+	padding-top: 20px;
+}
+.tip-form div{
+	padding-top: 10px;
+}
+.tip-form button{
+	padding: 5px 10px;
+	margin: 20px 10px 0 10px;
+}

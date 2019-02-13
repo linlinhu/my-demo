@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				background: skyblue;
+			}
+			#qrcode{
+				padding: 5px;
+				height: 170px;
+				width: 170px;
+				background: white;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>svg二维码</h1>
+		<div id="qrcode" ></div>
+	</body>
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/raphael-2.1.0-min.js"></script>
+	<script src="js/qrcodesvg.js"></script>
+	<script type="text/javascript">
+	var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5f5700a7767fdae0&redirect_uri=http%3A%2F%2Fewm.emininfo.cn%2FwxsGUI%2Fwxservant%2FregisterMachine.htm%3FsellerId%3D123%26machineTag%3DBD18586814704%26time%3D1498211266719&response_type=code&scope=snsapi_userinfo&state=4#wechat_redirect";
+		var qrcodesvg 	= new Qrcodesvg( url , "qrcode", 170);
+		qrcodesvg.draw();
+	</script>
+</html>

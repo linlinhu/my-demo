@@ -1,0 +1,52 @@
+@charset "utf-8";
+*{padding: 0;margin:0}
+.container{
+	width: 1024px;
+	height: 580px;
+	position: relative;
+}
+video{
+	position: absolute;
+	top:0;
+	left:0;
+	bottom: 0;
+	right:0;
+}
+
+.controls{
+	position: absolute;
+	display: -webkit-box;
+	bottom: 0;
+	left: 0;
+	height:50px;
+	background-color: #f66;
+	right:0;
+	padding-top: 10px;
+}
+.controls div{
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-ms-box-flex: 1;
+	box-flex: 1;
+	text-align: center;
+}
+
+.controls .playRange{
+	-webkit-box-flex: 10;
+	-moz-box-flex: 10;
+	-ms-box-flex: 10;
+	box-flex: 10;
+}
+.controls .playRange input{
+	width: 100%;
+}
+
+.controls .volumRange{
+	-webkit-box-flex: 2;
+	-moz-box-flex: 2;
+	-ms-box-flex: 2;
+	box-flex: 2;
+}
+.controls .volumRange input{
+	width: 100%;
+}

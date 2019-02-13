@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8">
+	    <title>图片视频轮播</title>
+	    <style>
+		    div, 
+		    ul, 
+		    img, 
+		    html, 
+		    body, 
+		    p {
+				margin: 0;
+				padding: 0;
+			}
+	    	#box {
+	    		position: relative;
+	    		overflow: hidden;
+				margin-left: 10px;
+				height: 340px;
+				width: 790px;
+			}
+			#box ul {
+				position: absolute;
+			}
+			#box ul img {
+				height: 340px;
+				width: 790px;
+			}
+			#box ul li {
+				float: left;
+				list-style: none;
+			}
+			#box ul video {
+				height: 340px;
+				width: 790px;
+			}
+			#lunbopages {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: 0 auto;
+				height: 30px;
+			}
+			#lunbopages div {
+				float: left;
+				margin: 5px;
+				height: 20px;
+				width: 20px;
+				border-radius: 100%;
+				background: rgba(93, 160, 119, .2);
+			}
+	    </style>
+	</head>
+	<body> 
+	    <div id="box">
+			<ul>
+			</ul>
+			<span id="lunbopages"></span>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script type="text/javascript" src="js/lunbo.js"></script>
+	<script>
+		var adData = [
+			{src: '../images/m3.jpg', type: 'images', time: 2},
+			{src: '../images/m1.jpg', type: 'images', time: 5},
+			{src: '../videos/mov_bbb.mp4', type: 'video', time: 10},
+			{src: '../images/m2.jpg', type: 'images', time: 2},
+			{src: '../videos/3theA.mp4', type: 'video', time: 15}
+		],
+			_box = $('#box'),
+			_pages = $('#lunbopages'),
+			_ul = $('ul',_box)[0],
+			len = adData.length,
+			html = '',
+			_div='',
+			video = '',
+			circles = '';   
+	 		lis = '';
+	 		_first = '',
+	 		_last = '',
+	 		index = '',
+	 		nextIndex = '',
+	 		imgWidth = '';
+		_ul.innerHTML = '';
+		_pages.css({width: len * 30});
+		for (var i = 0; i < len; i++) {
+			if (adData[i].type == 'video') {
+				html += '<li type="' + adData[i].type + '" time="' + adData[i].time + '"><video class="videoYX" poster="../images/m4.jpg" src="' + adData[i].src + '"></video></li>';
+			} else {
+				html += '<li type="' + adData[i].type + '" time="' + adData[i].time + '"><img src="' + adData[i].src + '"></li>';
+			};
+		};
+		_ul.innerHTML = html;
+		// 添加小圆点
+		console.log(_pages);
+	 	for (var i = 0;i < len; i++) {
+	 		_div += '<div></div>';
+	 	};
+	 	_pages.html(_div);
+	 	
+	 	circles = $('div', _pages);   
+	 	lis = $('li', _box);
+	 	_first = lis[0].cloneNode(true);
+	 	_last = lis[len - 1].cloneNode(true);
+	 	_ul.appendChild(_first);
+	 	_ul.insertBefore(_last, lis[0]);
+	 	len += 2;
+	 	lis = $('li', _box);
+	 	index = 1;
+	 	nextIndex = 2;
+	 	imgWidth = _box.width();
+	 	_ul.style.width = len * imgWidth + 'px';
+	 	circles[0].style.background = 'rgba(93, 160, 119, .6)';
+	 	_ul.style.left =- imgWidth + 'px';
+	 	//	自动轮播
+		// 	var timer=setInterval(lunboMove,3000);
+		setTimeout(lunboMove, 1000)
+	</script>
+</html>

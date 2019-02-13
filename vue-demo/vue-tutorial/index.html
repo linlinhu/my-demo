@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>vue-demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="app2">{{message}}
+    	<div>名字：{{name}}</div>
+    	<input type="text" v-model="message">
+    	<input type="text" v-model="name">
+    	<el-button @click="sayName">Button</el-button>
+    	<el-button @click="changeTitle">点击有惊喜</el-button>
+        <a href="javascript:void(0)" v-bind:title="title">hover please</a>
+    	
+	</div>
+    
+    <script src="/dist/build.js"></script>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+    <script type="text/javascript">
+    	let data = {
+    		name:'winnie',
+    		message:'Hello World!',
+            title: '页面加载于 ' + new Date().toLocaleString()
+    	};
+    	let Vue1 = new Vue({
+		    el:'#app2',
+		    data:data,
+		    methods: {
+		    	sayName: function(e) {
+		    		alert('winnie');
+		    		alert('this', e.target)
+		    	},
+		    	changeTitle: function(e){
+		    		console.log('e.target:',e.target)
+		    	}
+		    }
+		});
+    </script>
+  </body>
+</html>

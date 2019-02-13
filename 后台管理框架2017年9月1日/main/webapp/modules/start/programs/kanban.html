@@ -1,0 +1,37 @@
+<#if user.projects?size != 0>
+<div class="col-sm-4 col-xs-12">
+	<div class="ibox float-e-margins">
+	    <div class="ibox-title">  
+	    	<h5>禅道看板入口</h5>
+	    </div>
+	    <div class="ibox-content no-padding">
+			<table class="footable table table-stripped toggle-arrow-tiny" id="missionViewFootable" data-page-size="8">
+                <tbody>
+			        <#list  user.projects as p>
+					<tr>
+                     	<td><a href="http://192.168.0.222/zentao/project-kanban-${p.id}.html" target="_blank">${p.name}(${p.code})</a></td>
+                   	</tr>
+			        </#list>
+                </tbody>
+               	<tfoot>
+               		<tr>
+                   		<td>
+                       		<ul class="pagination pull-right"></ul>
+                   		</td>
+               		</tr>
+               	</tfoot>
+            </table>
+       	</div>
+	</div>
+</div>
+<script>
+$("#missionViewFootable").footable()
+</script>
+</#if>
+
+    
+	
+   
+
+
+

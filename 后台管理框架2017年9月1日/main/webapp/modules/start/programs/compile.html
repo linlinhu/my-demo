@@ -1,0 +1,177 @@
+<div class="row" id="jenkinsDatas-view"></div>
+<script id="jenkinsDatas" type="text/html">
+{{# if(d.length > 0) { }}
+
+<div class="col-sm-12">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h5>jenkins编译与构建</h5>
+		</div>
+		<div class="ibox-content no-padding">
+			<table class="footable table table-stripped toggle-arrow-tiny" id="jenkinsFootable" data-page-size="5">
+				<thead>
+                     <tr>
+                     	 <th>上次编译状态</th>
+                     	 <th>编译晴雨表</th>
+                     	 <th>项目名称</th>
+                         <th>上次成功</th>
+                         <th>上次失败</th>
+                         <th>上次持续时间</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+		 			
+				{{# layui.each(d, function(index, item){ 
+					var lsDate = calMillis(new Date().getTime() - item.lastSuccessTime),
+						lfDate = calMillis(new Date().getTime() - item.lastFailTime),
+						lastCon = calMillis(item.lastContinued);
+						
+					
+				}}
+					<tr>
+                     	<td><a href="{{item.lastBuildUrl}}" target="_blank">
+						{{# if(item.lastBuildStatus === 'SUCCESS'){ }}
+							<img src="${base}/img/perfect.png" title="构建成功" alt="编译成功">
+						{{# }else{ }}
+							<img src="${base}/img/bad.png" title="构建失败" alt="编译失败">
+						{{# } }}
+						</a></td>
+                     	<td>
+						<a href="javascript:void(0)" title="{{item.projectStatus}}" alt="{{item.projectStatus}}">
+						{{# if(item.healthScore > 60){ }}
+							<img src="${base}/img/sun.png">
+						{{# }else{ }}
+							<img src="${base}/img/rain.png">
+						{{# } }}
+						</a></td>
+                     	<td><a href="{{item.projectUrl}}" target="_blank">{{item.projectName}}</a></td>
+                     	<td>{{lsDate}} - <a href="{{item.lastSuccessUrl}}" target="_blank">{{item.lastSuccessNumber}}</a></td>
+                     	<td>{{lfDate}} - <a href="{{item.lastFailUrl}}" target="_blank">{{item.lastFailNumber}}</a></td>
+						<td>{{lastCon}}</td>
+                     </tr>
+  				{{# }); }}
+                 </tbody>
+               	<tfoot>
+               		<tr>
+                   		<td colspan="6">
+                       		<ul class="pagination pull-right"></ul>
+                   		</td>
+               		</tr>
+               	</tfoot>
+            </table>	
+		</div>                
+	</div>
+</div>
+{{# } }}
+</script>
+<script>
+var loading = null,
+	i=0,
+	jkObj = {},//数据对象
+	jkDatas = [],//数据容器
+	jkTpl = jenkinsDatas.innerHTML,//数据模板
+	jkView = document.getElementById('jenkinsDatas-view'),//数据视图容器
+	data = null,//jenkins编译数据结果转JSON对象
+	curJob = null,//当前循环的项目
+	jobJson = null,//关联项目JSON
+	jobHr = null,//项目健康报告数据 
+	jbuildJson = null,//项目构建编译结果JSON
+	jkConf = null;
+	
+$.getJSON ("js/config.json", function (data){
+	jkConf = data.jenkins;
+	if(!jkConf) return false;
+	
+	$.ajax({
+		url:'${base}jenkinsApi',
+		data:{
+			url: jkConf.connect
+		},
+		type: 'get',
+		success:function(result){
+			data = JSON.parse(result);
+			for(i = 0; i < data.jobs.length; i++) {
+				curJob = data.jobs[i];
+		        <#list  user.projects as p>
+		        	if(curJob.name == '${p.code}') {
+						jkObj = {};
+						jkObj['projectName'] = curJob.name;//项目名称
+						jkObj['projectUrl'] = curJob.url;//项目编译信息查看地址
+						$.ajax({
+							url:'${base}jenkinsApi',
+							data:{
+								url: curJob.url + '/api/json'
+							},
+							type:"get",
+							async: false,
+							success:function(jresult){
+								jobJson = JSON.parse(jresult);
+								jobHr = jobJson.healthReport[0];
+								jkObj['projectStatus'] = jobHr.description;//项目编译健康状态描述
+								jkObj['healthScore'] = jobHr.score;//项目编译健康分数
+								$.ajax({
+									url:'${base}jenkinsApi',
+									data:{
+										url: jobJson.lastSuccessfulBuild.url + '/api/json'
+									},
+									type:"get",
+									async: false,
+									success:function(build){
+										jbuildJson = JSON.parse(build);
+										jkObj['lastSuccessTime'] = jbuildJson.timestamp;//项目编译上次成功的时间戳
+										jkObj['lastSuccessNumber'] = '#' + jbuildJson.number;//项目编译上次成功的编译编号
+										jkObj['lastSuccessUrl'] = jbuildJson.url;//项目编译上次成功的编译信息查看地址
+									}
+								})
+								$.ajax({
+									url:'${base}jenkinsApi',
+									data:{
+										url: jobJson.lastFailedBuild.url + '/api/json'
+									},
+									type:"get",
+									async: false,
+									success:function(build){
+										jbuildJson = JSON.parse(build);
+										jkObj['lastFailTime'] = jbuildJson.timestamp;//项目编译上次失败的时间戳
+										jkObj['lastFailNumber'] = '#' + jbuildJson.number;//项目编译上次失败的编译编号
+										jkObj['lastFailUrl'] = jbuildJson.url;//项目编译上次失败的编译信息查看地址
+									}
+								})
+								
+								
+								$.ajax({
+									url:'${base}jenkinsApi',
+									data:{
+										url: jobJson.lastBuild.url + '/api/json'
+									},
+									type:"get",
+									async: false,
+									success:function(build){
+										jbuildJson = JSON.parse(build);
+										jkObj['lastBuildStatus'] = jbuildJson.result;//项目编译最后一次的时间戳
+										jkObj['lastBuildUrl'] = jbuildJson.url;//项目编译最后一次的编译信息查看地址
+										jkObj['lastContinued'] = jbuildJson.duration;//项目编译最后一次的持续时间
+									}
+								})
+								
+							}
+						})
+						jkDatas.push(jkObj);
+					}
+		        </#list>
+					
+			}	
+			
+			if(jkDatas.length > 0) {
+				$('#jenkinsDatas-view').attr('hasData', 1);
+			}
+			loading = layer.load();
+			laytpl(jkTpl).render(jkDatas, function(jkHtml){
+				layer.close(loading);
+				jkView.innerHTML = jkHtml;
+				$("#jenkinsFootable").footable();
+			});
+		}
+	});
+});
+</script>

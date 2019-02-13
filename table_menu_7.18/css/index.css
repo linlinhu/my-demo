@@ -1,0 +1,170 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+.hide {
+	display: none!important;
+}
+.bg {
+	position: absolute;
+	right: 0;
+	left: 0;
+
+	width: 700px;
+	height: 350px;
+	margin: 200px auto;
+	padding: 30px;
+
+	font-size: 20px;
+	border:1px solid #c0cdd8;
+	border-radius: 10px;
+}
+.container {
+	position: relative;
+
+	width: 600px;
+	height: 330px;
+
+	color: #fff;
+}
+.btn {
+	position: absolute;
+	right: 30px;
+	top:150px;
+
+	height: 40px;
+	width: 40px;
+	
+	border-radius: 100%;
+	text-align: center;
+	line-height: 40px;
+	background-color: #8096a6;
+	color: #fff;
+	cursor: pointer;
+}
+.minus {
+	top:250px;
+}
+.tab-bar {
+	overflow: hidden;
+
+	width: 600px;
+	height: 30px;
+
+	background: #fff;
+}
+.container .tab {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	float: left;
+
+	width: 100%;
+	border:1px solid #fff;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+
+	line-height: 30px;
+	cursor: pointer;
+}
+.container .tab:first-child {
+	border-left: 0;
+}
+.container .tab:last-child {
+	border-right: 0;
+}
+.container span {
+	display: inline-block;
+	position: absolute;
+	top: 150px;
+
+	height: 60px;
+	width: 30px;
+
+	background-size: 100% 100%;
+}
+.container .pre {
+	left: 0px;
+
+	background-image: url("../img/pre.png");
+}
+.container .next {
+	right: 0px;
+
+	background-image: url("../img/next.png");
+}
+.cover {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
+.tip-form {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+
+	height: 200px;
+	width: 300px;
+	margin: auto;
+
+	background-color: #ff9d9b;
+	border-radius: 5px;
+	color: #fff;
+	text-align: center;
+	line-height: 30px;
+}
+.tip-form input {
+	height: 24px;
+}
+.tip-form P {
+	padding-top: 20px;
+}
+.tip-form div {
+	padding-top: 10px;
+}
+.tip-form button {
+	padding: 5px 13px;
+	margin: 20px 15px 0 15px;
+
+	border:0;
+	border-radius: 3px;
+	background-color: #6eb5c0;
+	color: #fff;
+}
+.content {
+	height: 300px;
+
+	text-align: center;
+	background-color: #6eb5c0;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.content div {
+	padding-top: 50px;
+	height: 250px;
+}
+.tab-bar .close {
+	position: absolute;
+	display: inline-block;
+	top:5px;
+	right: 5px;
+
+	height: 12px;
+	width: 12px;
+	border: 1px solid transparent;
+	border-radius: 100%;
+	
+	background-image: url(../img/close.png);
+	background-size: 100% 100%;
+
+	z-index: 2;
+}
+.close:hover {
+	border-color: #fff;
+}

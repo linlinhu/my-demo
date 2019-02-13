@@ -1,0 +1,61 @@
+<link href="${base}css/modules/employees/employee_manage.css" rel="stylesheet">
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>员工管理</h5>
+                </div>
+                <div class="ibox-content">
+                	<div class="filter-line">
+	                    <form class="input-group" id="employeeSearchForm">
+		                    <input type="text" placeholder="请输入账、姓名或邮箱" class="form-control keyValue" name="match" value="${match!''}" role="user-params">
+		                    <input class="page" type="hidden" name="page" value="${pagedResult.currentPage}">
+		                    <button type="button" class="btn btn-primary emp-form-search" role="submit">搜索</button>
+		                	<button type="button" class="btn" role = "reset">重置</button>
+	                    </form>
+                    </div>
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8"  data-paging="false" id="employeeTable">
+                        <thead>
+                                <tr>
+                                    <th data-sort-ignore="true">
+                                    	序号
+                                    </th>
+                                    <th>用户账号</th>
+                                    <th>用户姓名</th>
+                                    <th>部门</th>
+                                    <th>邮箱</th>
+                                    <th data-hide="all">Q&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspQ</th>
+                                    <th data-hide="all">联系电话</th>
+                                </tr>
+                            </thead>
+                            <tbody totalPage="${pagedResult.totalPageNum}">
+                            	<#list pagedResult.resultList as data>
+                                <tr class="msg">
+                                	<td>${(pagedResult.currentPage-1) * 8 + data_index + 1}</td>
+                                    <td class="user-acoount epm">${data.account}</td>
+                                    <td class="user-realName epm">${data.realName}</td>
+                                    <td class="user-branch epm">
+                                    	<#if data.dept.name??>
+                                    		${data.dept.name}
+                                    	</#if>
+                                    </td>
+                                    <td class="user-email epm">${data.email}</td>
+                                    <td class="user-qq epm">${data.qq}</td>
+                                    <td class="user-mobile epm">${data.mobile}</td>
+                                </tr>
+                            	</#list>
+                            </tbody>
+                            <tfoot></tfoot>
+                    </table>
+					<div class="text-right" id="employeePage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${base}js/modules/employees/manage.js"></script>
+
+
+    
+

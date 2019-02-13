@@ -1,0 +1,141 @@
+<div class="wrapper-content">
+	<div class="row">
+	    <div class="col-sm-3">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-content mailbox-content">
+	                <div class="file-manager">
+	                    <h3 class="tag-title">群组</h3>
+                        <ul class="tag-list" style="padding: 0">
+                        	<#list groups as g>
+	                   		<li>
+	                   			<a href="javascript:void(0)" onclick="reloadPremission(this)" data-id="${g.id}"> ${g.name}</a>
+	                      	</li>
+	                      	</#list>
+                        </ul>
+	                    <div class="clearfix"></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="col-sm-9 animated fadeInRight">
+	        <div class="mail-box-header">
+	        	<div class="pull-right">
+	        		<button class="btn btn-primary" onclick="savePermission()">保存权限</button>
+	        	</div>
+	            <h3>
+	           	 权限模块
+	        	</h3>
+	        </div>
+	        <div class="mail-box">
+	
+	            <table class="table table-hover table-mail" id="rabcMoudlesTable">
+	                <tbody>
+	                	<#list menus as ms>
+		                	<#list ms.children as m>
+			                    <tr>
+			                        <td>
+			                            <input type="checkbox" class="i-checks" value="${m.id}" name="menuIds">
+			                        </td>
+			                        <td>${m.icon}</td>
+			                        <td>${m.name}</td>
+			                        <td class="">${m.link}</td>
+			                    </tr>
+		                    </#list>
+	                	</#list>
+	                </tbody>
+	            </table>
+	
+	        </div>
+	    </div>
+	</div>
+</div>
+<script>
+	$('.i-checks').iCheck({
+	    checkboxClass: 'icheckbox_square-green',
+	    radioClass: 'iradio_square-green',
+	});
+	//清楚选中的权限
+	function clearChecked(){
+		var menusEl = $('#rabcMoudlesTable div.checked'),
+			menusLen = menusEl.length;
+		
+		for(i = 0; i < menusLen; i++) {
+			$(menusEl[i]).removeClass('checked');
+		}
+	}
+	//重新加载群组的权限
+	function reloadPremission(self){
+		var i = 0,
+			groupId = $(self).attr('data-id'),
+			loading = null;
+		
+		if($('.tag-list a.btn-primary').length > 0) {
+			$('.tag-list a.btn-primary').each(function(){
+				$(this).removeClass('btn-primary');
+			});
+		}
+		$(self).addClass('btn-primary');
+		clearChecked();
+		loading = layer.load();
+    	$.ajax({
+        	url:'${base}auth/' + groupId + '/permissionInfo',
+        	type:"get",
+        	success:function(data){
+        		layer.close(loading);
+        		if(data.length > 0) {
+        			for(i = 0; i< data.length; i++) {
+                		$($('input[value=' + data[i].menuId + ']').parent()).addClass('checked');
+        			}
+        		}
+        	}
+        });
+	}
+	
+	//保存权限
+	function savePermission() {
+		var i = 0,
+			groupEl = $('.tag-list a.btn-primary'),
+			groupLen = $('.tag-list a.btn-primary').length,
+			groupId = groupLen > 0 ? groupEl.attr('data-id') : 0,
+			menusEl = $('#rabcMoudlesTable div.checked'),
+			menusLen = menusEl.length,
+			menuIds = '',
+			loading = null;
+			
+		if(groupLen == 0) {
+			layer.msg('请选中一个群组');
+			return false;
+		}
+		
+		if(menusLen == 0) {
+			layer.msg('请选中至少一个权限模块');
+			return false;
+		}
+		
+		for(i = 0; i < menusLen; i++) {
+			menuIds += $(menusEl[i]).find('input[class="i-checks"]').val() + ',';
+		}
+		menuIds = menuIds.substring(0, menuIds.length - 1);
+		
+		loading = layer.load();
+    	$.ajax({
+        	url:'${base}auth/permissionInfo',
+        	data: {
+        		groupId: groupId,
+        		menuIds: menuIds
+        	},
+        	type:"POST",
+        	success:function(data){
+        		layer.close(loading);
+        		data = JSON.parse(data);
+        		if (!data.success) {
+        			layer.alert(data.message ? data.message : '保存失败',{icon: 5});
+        		} else {
+        			layer.alert(data.message ? data.message : '保存成功',{icon: 6});
+        		}
+        	}
+        });
+	}
+
+
+</script>

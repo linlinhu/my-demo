@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+    	<meta charset="utf-8" />
+        <title>QRCode</title>
+        <style>
+        	body{
+        		background: lightblue;
+        	}
+        </style>
+        <script type="text/javascript" src="js/qrcode-light.js"></script>
+        <script type="text/javascript" src="js/qrgen.js"></script>
+    </head>
+    <body>
+        <div>
+            <h1>二维码生成</h1>
+            <div>
+                图片: <img id=qrimg src='../images/img_qrcode_logo.png'>
+                <label><input id=qrclearedges type=checkbox checked>清理边缘</label>
+            </div>
+            <div><input id=fimg type=file></div>
+            <div>文本: <textarea id=qrtext>https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=arcTo&rsv_pq=b715fa8800134288&rsv_t=ba7aO7udRW6Y7rbv2k6WajZ%2FjMYv5h6ppt97d45AgNyMSaB1RgVAvRWEwIo&rqlang=cn&rsv_enter=1&rsv_sug3=2&rsv_n=2</textarea></div>
+            <div>大小: <input id=cellSize type=range min=2 max=10 value=6></div>
+            <table>
+                <tr>
+                    <td rowspan=2>效果:</td>
+                    <td colspan=3><input id=cellEffect type=range min=-50 max=50 step=5 value=0></td>
+                </tr>
+                <tr id=cellEffectStops>
+                    <td align=left><a href=# data=l>液体</a></td>
+                    <td align=center><a href=# data=s>方块</a></td>
+                    <td align=right><a href=# data=r>圆</a></td>
+                </tr>
+            </table>
+            <div>
+                Foreground color: <input id=colorFore type=color value=#4169e1>
+                Background color: <input id=colorBack type=color value=#ffffff><br>
+                Outside-border color: <input id=colorOut type=color value=#cd5c5c>
+                Inside-border color: <input id=colorIn type=color value=#191970>
+            </div>
+            <button id=qrgen>生成</button>
+        </div>
+        <div id=qrcode></div>
+        <script src="js/take.js"></script>
+    </body>

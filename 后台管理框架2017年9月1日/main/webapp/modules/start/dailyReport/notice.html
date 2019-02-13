@@ -1,0 +1,83 @@
+<div class="col-sm-4 col-xs-12">
+	<div class="daily no-daily">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">  
+           		<h5>未提交日报</h5>
+				<div class="ibox-tools">
+     				<input placeholder="开始日期" class="form-control layer-date laydate-icon" id="noDailyDate" value="">
+     				<i class="fa fa-calendar"></i>
+					<div class="clearfix"></div>
+     				</div>
+				</div>
+                 
+            	<div class="ibox-content">
+				<script id="noDrAccounts" type="text/html">
+				{{# if(d.datas && d.datas.length > 0) { }}
+					{{# layui.each(d.datas, function(index, item){ }}
+					<li><a href="javascript:void(0)">{{item}}</a></li>
+					{{# }); }}
+				{{# }else{ }}
+					{{d.date}}当日没人未提交日报
+				{{# } }}
+				</script>
+				<ul class="tag-list" id="noDrAccounts-view" style="padding: 0">
+				<#if noDrDate?? && noDrDate?length gt 0>
+				<#list noDrAccounts as d>
+					<li>
+						<a href="javascript:void(0)">${d}</a>
+					</li>
+				</#list>
+				<#else>
+					当日没人未提交日报
+				</#if>
+				</ul>
+				<div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var yesterDayDate = new Date(new Date().getTime() - 86400000);
+if(yesterDayDate.getDay()==0){
+	//昨天是星期天  把日期设置为上周五
+	yesterDayDate = new Date(yesterDayDate.getTime()-86400000*2)
+}
+var yesterday = yesterDayDate.Format('yyyy-MM-dd');
+var noDrDate = '${noDrDate}';
+$('#noDailyDate').val(noDrDate ? noDrDate : yesterday);
+laydate.render({
+   	elem: '#noDailyDate', //指定元素
+   	format: 'yyyy-MM-dd',
+   	min: '2017-1-1',
+   	max: yesterday,
+   	value: yesterday,
+   	theme: '#0069b6',
+   	showBottom: false,
+   	done: function(value, date, endDate){
+   		var noDrAccountsTpl = noDrAccounts.innerHTML,//数据模板
+			noDrAccountsView = document.getElementById('noDrAccounts-view');//数据视图容器
+			loading = layer.load();
+			
+   		$.ajax({ 
+			url: 'dailyReport/noDailyReportData/'+value, 
+			method:'get',
+			success: function(d, error){
+				$('#noDailyDate').val(d.date ? d.date : value);
+				laytpl(noDrAccountsTpl).render(d, function(html){
+					layer.close(loading);
+					noDrAccountsView.innerHTML = html;
+				});
+	        }
+		});
+	  	}
+   });
+</script>
+
+	
+
+    
+	
+   
+
+
+

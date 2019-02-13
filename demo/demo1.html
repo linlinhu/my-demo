@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>demo</title>
+		<style>
+			.pic{
+				width: 120px;
+				height: 120px;
+				border: 1px solid red;
+			}
+			.ani{
+				/*background-image: url(../images/animation.gif);*/
+				background-size: 240px 180px;
+				background-position: -20px -20px;
+			}
+			.pic img{
+				height: 120px;
+				width: 120px;
+				cursor: pointer;
+				background-repeat: no-repeat;
+				background-position: 0 0;background-size: 16px 16px;
+				font-family: "微软雅黑"
+			}
+		</style>
+	</head>
+	<body>
+		<h3>标题1</h3>
+		<div id='box'>demo1</div>
+		<img src="../images/timg.jpg" />
+		<img src="../images/timg2.gif" />
+		<h4>标题2</h4>
+		<div class="pic ani">
+			<!--<img src="../images/animation.gif" />-->
+		</div>
+		<img src="../images/加载.gif" />
+		<div id="n1">
+		    <div id="n2">
+		        <ul id="n3">
+		            <li id="n4">item1 n4
+		            		<span>点击有礼</span>
+		            </li>
+		            <li id="n5">item2</li>
+		            <li id="n6">item3
+		            	<span>点击有礼</span>
+		            </li>
+		            <li id='con'>contains
+		            	<li id="inLi"></li>
+		            	<span>点击有礼</span>
+		            </li>
+
+		            <li >cont</li>
+		        </ul>
+		    </div>  
+		</div>
+		
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script>
+// 		var array=[];
+// 		var _box=$("#box");
+// 		/*获取数据 显示到页面*/
+// 		function fun(){
+// 			array=[
+// 				{id:123,name:'小明'},
+// 				{id:234,name:'韩梅梅'}
+// 			]
+// 			array[0].name="李磊";
+// 			var len=array.length;
+// 			var html="";
+// 			for(var i=0;i<len;i++ ){
+// 				 html+="<p id='"+array[i].id+"'>"+array[i].name+"</P>"
+// 			}
+// 			_box.append(html);
+// 			console.log(html,_box);
+// 			globalNum = "1000";
+// 		}
+// 		fun()
+// 		_box.on("click","p",function(){
+// 			var len=array.length;
+// 			var item=this.id;
+// 			for(var i=0;i<len;i++ ){
+// 				 if(array[i].id==item){
+// 				 	console.log(array[i])
+// 				 }
+// 			}
+			
+// 		})
+// 		var car = NaN;
+// 		console.log(!car)
+// 		console.log(array[0],globalNum)
+		
+// 		for(var temp=0;temp<10;temp++){
+// 			console.log(temp)
+// 		}
+// 		temp +=11;
+// 		var ary = [1,2]
+// 		console.log("在循环外面打印，",temp,Array.isArray(ary))
+// 		function fun1(name,address,age){
+// 			console.log(arguments[0]);
+// 			console.log(arguments[1]);
+// 			console.log(arguments[2]);
+// 		}
+// 		fun1("小明","成都","33")
+		
+		
+		
+// 		var timer =setInterval("fun5()",1000)
+// 		var num=10;
+// 		function fun5(){
+// 			num--;
+// 			console.log(num);
+// 			if(num<=0){
+// 				clearInterval(timer)
+// 				console.log("应该停止了",num)
+// 			}
+			
+			
+// 		}
+// 		var s = 'test', t;
+// 		s.len = 4;
+// 		t = 0.6;
+// 		console.log(t);
+
+// 		var array1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+// 			temp;
+// 		function sliceArray(e){
+// 			temp = array1.slice((e - 1) * 5, e * 5);
+// 			console.log(array1, temp);
+// 		}
+// 		sliceArray(3);
+
+// 		(function(type){
+// 			type.name = "winnie";
+// 			type.hobby = "看电影";
+// 			type.action = function(){
+// 				alert('吃火锅');
+// 			};
+// 			type.render = function(){
+// 				console.log(type.name)
+// 			}
+			
+// 		}(window.test={}));
+// 		console.log('test.name',test.name)
+// 		console.log('test.hobby',test.hobby)
+// 		test.action();
+// 		test.render();
+
+// 		var $li = $("ul li");
+// // 返回当前文档的document对象
+// console.log('$li.context', $li.context); // [object HTMLDocument]
+// console.log( $li.context === document ,'<br>'); // true
+
+// var n1 = document.getElementById("n1");
+// var $n3 = $( "#n3", n1 );
+// // 返回n1
+// console.log( $n3.context ); // [object HTMLDivElement]
+// console.log( $n3.context === n1 ); // true
+
+// console.log($('div',n1))
+
+// var $n2 = $("#n2");
+// var $n4 = $( "#n4", $n2 );
+// // 返回$n2的context属性：document对象
+// document.writeln( $n4.context ); // [object HTMLDocument]
+// document.writeln( $n4.context === document ); // true
+
+// var $n3 = $("#n3", n1);
+// var $n5 = $( "#n5", $n3 );
+// // 返回$n3的context属性：n1
+// document.writeln( $n5.context ); // [object HTMLDivElement]
+// document.writeln( $n5.context === n1 ); // true
+
+// $(':header').css('color','red')
+
+// console.log($('li:contains(cont)').length);
+		
+// var str = '132132432434353454388888';
+// /*var temp = str.contains('8888');*/
+// console.log('temp',temp);
+// $('li').on('click','span',function(){
+// 	var temp = $(this).closest('li');
+// 	console.log('closest',temp[0].id);
+// 	alert('点击')
+// });
+// $('li').off('click');
+
+// console.log($('#n4').nextAll())
+// $('#n6').nextAll().addBack().css( "color", "red" );
+// $('#n4').one('click',function(){
+// 	fn7();
+// })
+// function fn7(){
+// 	var n = 10;
+// 	$('#n4').text(n+'s');
+// 	var timer = setInterval(function(){
+// 		if(n > 1) {
+// 			n--;
+// 			$('#n4').text(n+'s');
+// 		} else {
+// 			$('#n4').text('点击获取验证码');
+// 			clearInterval(timer);
+// 			$('#n4').one('click',function(){
+// 				fn7();
+// 			})
+// 		}
+// 	},1000)
+// }
+// var fn8 = (a,b)=>{
+// 	console.log('a',a);
+// 	return a+b;
+// };
+// console.log(fn8(10,5));
+
+// var a = 20;
+// var b = 30;
+// /*var string = a + "+" + b + "=" + (a + b);*/
+// var string = `${a}+${b}=${a+b}`;
+// console.log(string)
+
+// let props = {
+// 	name: 'winnie',
+// 	age: 18,
+// 	gender: '女',
+// 	address: '四川省成都市'
+// },
+// {name,age,mobile = '18700000000'} = props;
+// console.log('name',name,mobile)
+
+// let personOrgIdList =['1,2,3','2,3','1,3,4'];
+// let personOrgIds = [];
+// personOrgIdList.forEach(function(value,index,array){
+// 	let temp = value.split(',')
+// 	personOrgIds = personOrgIds.concat(temp);
+// });
+// personOrgIds = dedupe(personOrgIds);
+// function dedupe(array){
+// 	return Array.from(new Set(array));
+// };
+// console.log('personOrgIds',personOrgIds)
+// function fn9(){
+// 	let arr1 = [1,2,3],
+// 		arr2 = [...arr1,4,5,6];
+
+// 	console.log('arr2',arr2);
+// };
+// fn9();
+// function fn10(a,b,...more){
+// 	let sum;
+// 	console.log('more',more);
+// 	sum = more.reduce((m,n)=>m+n);
+// 	console.log('sum1',sum);
+// 	sum = sum+a+b;
+// 	console.log('sum2',sum);
+// };
+// fn10(1,2,3,4,5,6,7,8,9);
+// function fn11(){
+// 	let name = 'winnie',
+// 		age = 18;
+// 	let obj = {
+// 		name,
+// 		age,
+// 		getName(){
+// 			console.log('name and age',this.name,this.age);
+// 		}
+// 	}
+// };
+
+// class Person {
+// 	constructor(name,age){
+// 		this.name = name;
+// 		this.age = age;
+// 	}
+// 	say(){
+// 		console.log('name and age',this.name,this.age);
+// 	}
+
+// };
+// let person1 = new Person('Lily','20');
+// person1.say();
+let array2 = [2,4,5,6];
+console.log('展开',...array2);
+let obj = {
+	0: 'a',
+	1: 'b',
+	2: 'c',
+	3: 'c',
+	length: 4
+},
+array3 = Array.from(obj);
+console.log('array3',array3)
+console.log(Array.from('hellow'))
+$('.ani').css({'background-image': 'url(../images/animation.gif)'});
+
+
+$(moduleId + ' .floor-devices-' + ssCode + ' ul').find('a[role="device-detail"]').unbind('click').on('click', function() {
+							
+							var self = $(this),
+								nowTime = (new Date()).getTime();
+								currentDeviceId = self.attr('data-id'),
+								currentDeviceEl = $(moduleId + ' .pg-bg .device-points > div[data-id="' + currentDeviceId + '"]'),
+								normal_img = currentDeviceEl.find('i').css('background-image'),
+								old_img = $(moduleId + ' .pg-bg .device-points i.selected').attr('data-img');
+				
+							if(normal_img.indexOf('location') == -1) {
+								currentDeviceEl.find('i').attr('data-img',normal_img);
+							}
+							$(moduleId + ' ul a[role="device-detail"]').removeClass('selected');
+							$(moduleId + ' .unusual-item span').removeClass('selected');
+							$(this).addClass('selected');
+							if(p.keyword && p.keyword.length > 0 && ssCode != showSubSystemCode) {
+								/**
+								 * 在搜索状态下，如果当前子系统不是被展示的子系统，加载当前子系统的数据和异常设备数据
+								 */
+								let parent = $(this).parents('.panel');
+								showSubSystemCode = ssCode;
+								noPageDevicesBySystemCode({
+									floorId: _this.floorId,
+									systemCode: ssCode,
+									keyword: p.keyword ? p.keyword : ''
+								}, function(res) {
+									currentDeviceEl = $(moduleId + ' .pg-bg .device-points > div[data-id="' + currentDeviceId + '"]');
+									$(moduleId + ' .pg-bg .device-points i.selected').css({'background-image':old_img});
+									$(moduleId + ' .pg-bg .device-points i.selected').removeClass('selected');
+									currentDeviceEl.find('i').addClass('selected');
+								});	
+							} else {
+								$(moduleId + ' .pg-bg .device-points i.selected').css({'background-image':old_img});
+								$(moduleId + ' .pg-bg .device-points i').removeClass('selected');
+								currentDeviceEl.find('i').addClass('selected');
+							}
+							setTimeout(function(){
+								if(self.next('span').hasClass('physicalState-1')) {
+									currentDeviceEl.find('i').css({'background-image':'url(../../img/floors/location-error.png?p='+ nowTime +')'});
+								} else {
+									currentDeviceEl.find('i').css({'background-image':'url(../../img/floors/location.png?p=' + nowTime + ')'});
+								}
+							})
+							
+						});
+
+
+	</script>
+</html>

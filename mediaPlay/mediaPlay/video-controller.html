@@ -1,0 +1,186 @@
+<html>
+<head>
+	<title>Video</title>
+	<link rel="stylesheet" type="text/css" href="css/demo2.css">
+	<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+</head>
+<body>
+		<!-- 大的容器 -->
+		<div class="container" id="container">
+			<!-- 视频标签 -->
+			<video src="videos/c.mp4" id="vdo" width="500" height="500"></video>
+			<!-- 控制条 -->
+			<div class="controls" id="controls">
+				<!-- 播放或者暂停 -->
+				<div class="playOrPause">
+					<img src="img/pause.png" id="play">
+				</div>
+				<!-- 播放进度 -->
+				<div class="playRange">
+					<input type="range" name="playRange" id="playRange" min="0" step="1" value="0">
+				</div>
+				<!-- 播放时间 -->
+				<div class="playTime">
+					<span id="currentTime"></span>
+					<span id="allTime"></span>
+				</div>
+				<!-- 是否静音 -->
+				<div class="silence">
+					<img src="img/vol.png" id="silence"/>
+				</div>
+				<!-- 声音大小调节 -->
+				<div class="volumRange">
+					<input type="range" name="volumRange" id="volumRange" min="0" max="10" step="1"/>
+				</div>
+
+				<!-- 全屏 -->
+				<div class="fullScreen">
+					<img src="img/fullScreen.png" id="fullScreen"/>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			// 判断视频是否播放
+			var isPlay = true;
+			// 是否静音
+			var isSilence = true;
+			// 是否全屏
+			var isFullScreen = true;
+
+
+			var container = document.getElementById('container');
+			// 获取视频的高度与宽度
+			var $vdoW = $("#vdo").width();
+			var $vdoH = $("#vdo").height();
+
+			console.log($vdoW,$vdoH);
+
+			// 获取整个window的高度与宽度
+			var $windowW = $(window).width();
+			var $windowH = $(window).height();
+
+			//容器的高度与宽度设置成视频对象的高度与宽度
+			$("#container").css({
+				"width":$vdoW+"px",
+				"height":$vdoH+"px"
+			});
+
+			// 设置播放器宽高
+			$("#vdo").css({
+				"width":$vdoW+"px",
+				"height":$vdoH+"px"
+			});
+
+			var vdo = document.getElementById("vdo");
+			var volum = 0.5;
+			$("#volumRange").val(volum*10);
+			$("#playRange").attr("max",allTime);
+		
+
+			// 播放暂停按钮的控制
+			$("#play").on("click",function(){
+				if(isPlay){
+					vdo.play();
+					isPlay  = false;
+					$(this).attr("src","img/play.png");
+				}else{
+					vdo.pause();
+					isPlay = true;
+					$(this).attr("src","img/pause.png");
+				}
+
+			})
+
+			// 静音按钮的控制
+			$("#silence").on("click",function(){
+				if(isSilence){
+					vdo.volume = 0;
+					isSilence = false;
+					$(this).attr("src","img/novol.png");
+				}else{
+					vdo.volume = volum;
+					isSilence = true;
+					$(this).attr("src","img/vol.png");
+
+				}
+			});
+
+			// 全屏操作
+			$("#fullScreen").on("click",function(){
+				if(isFullScreen){
+					container.webkitRequestFullScreen();
+					$("#container").css({
+						"width":$windowW + "px",
+						"height":$windowH + "px"
+
+					});
+
+					$("#vdo").width($windowW+"px");
+					$("#vdo").height($windowH+"px");
+					$("#controls").css("z-index",9999);
+					isFullScreen = false;
+
+				}else{
+
+					document.webkitCancelFullScreen();
+					$("#container").css({
+						"width":$vdoW+"px",
+						"height":$vdoH + "px"
+					});
+
+					$("#vdo").css({
+						"width":$vdoW + "px",
+						"height":$vdoH +"px"
+					});
+
+					isFullScreen = true;
+
+
+
+				}
+
+			})
+
+
+			// 声音大小的控制
+			$("#volumRange").on("change",function(){
+				var val = $(this).val();
+				volum = val/10;
+
+				if(val == 0){
+					$("#silence").attr("src","img/novol.png");
+				}else{
+					$("#silence").attr("src","img/vol.png");
+				}
+
+				vdo.volume = volum;
+
+			});
+
+			function playTime(){
+				var currentTime = Math.ceil(vdo.currentTime);
+				$("#playRange").val(currentTime);
+				$("#currentTime").html(currentTime);
+				var allTime = Math.ceil(vdo.duration);
+				$("#allTime").html(allTime);
+			}
+
+
+			var timer = "";
+
+			vdo.addEventListener("timeupdate",playTime,true);
+
+
+			$("#playRange").on("mousedown",function(){
+				vdo.removeEventListener("timeupdate",playTime,true);
+				$(this).on("mouseup",function(){
+					var val = $(this).val();
+					vdo.currentTime = val;
+					vdo.addEventListener("timeupdate",playTime,true);
+				})
+			});
+
+		</script>
+</body>
+</html>

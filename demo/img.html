@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="author" content="oscar999">
+  <title></title>
+  </head>
+  <body>
+    <div id="dropbox"> Drop Here </div>
+    <div id="filecontent"></div>
+    <script>
+      var dropbox = document.getElementById("dropbox");
+	  var preview = document.getElementById("filecontent");
+      dropbox.addEventListener("dragenter", dragenter, false);  
+      dropbox.addEventListener("dragover", dragover, false);  
+      dropbox.addEventListener("drop", drop, false);   
+
+    function dragenter(e) {  
+        e.stopPropagation();  
+        e.preventDefault();  
+    }  
+
+    function dragover(e) {  
+        e.stopPropagation();  
+        e.preventDefault();  
+    }
+
+    function drop(e) {  
+        e.stopPropagation();  
+        e.preventDefault();   
+        var dt = e.dataTransfer;  
+        var files = dt.files;
+        if(files.length)
+        {
+          handleFiles(files)
+        }
+    } 
+    function handleFiles(files){
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			var imageType = /image.*/;
+			
+			if (!file.type.match(imageType)) {
+				continue;
+			}
+			
+			var img = document.createElement("img");
+			img.classList.add("obj");
+			img.file = file;
+			img.style="width:50px;height:50px";
+			preview.appendChild(img);
+			
+			
+			var reader = new FileReader();
+			reader.onload = (function(aImg){
+				
+				return function(e){
+					console.log("图片大小:"+e.total+"字节")
+					aImg.src = e.target.result;
+					aImg.onload = function(){
+						console.log("图片原始尺寸"+this.naturalWidth+" * "+this.naturalHeight)
+						
+					}
+					
+				};
+			})(img);
+			reader.readAsDataURL(file);
+		}
+	}      
+    </script>
+  </body>
+</html>

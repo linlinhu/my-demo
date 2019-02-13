@@ -1,0 +1,118 @@
+<div class="col-sm-6 col-xs-12" id="gitsubmitDatas-view"></div>
+<script id="gitsubmitDatas" type="text/html">
+{{# if(d.length > 0) { }}
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h5>git代码提交</h5>
+		</div>
+		<div class="ibox-content">
+			<div class="tabs-container">
+				<ul class="nav nav-tabs">
+				{{#  layui.each(d, function(index, item){ }}
+					<li class="active">
+	                	<a data-toggle="tab" href="#gitsubmit-tab-{{item.id}}" aria-expanded="true">{{item.name}}</a>
+	                </li>
+  				{{#  }); }}
+				</ul>
+				<div class="tab-content" id="gitsubmitTabPane-view">
+					{{#  layui.each(d, function(index, data){ }}
+						{{# if(index === 0){ }}
+	                    <div id="gitsubmit-tab-{{data.id}}" class="tab-pane active">
+						{{# }else{ }}
+	                    <div id="gitsubmit-tab-{{data.id}}" class="tab-pane">
+						{{# } }} 
+	                        <div class="panel-body no-padding">
+	                        	<table class="footable table table-stripped toggle-arrow-tiny" id="gsFootable{{data.id}}" data-page-size="5">
+					                <thead>
+					                     <tr>
+					                     	 <th>提交人</th>
+					                     	 <th data-hide="all">账户</th>
+					                     	 <th data-hide="all">提交时间</th>
+					                         <th>主题</th>
+					                         <th data-hide="all">说明</th>
+					                     </tr>
+					                 </thead>
+					                 <tbody>
+							 			{{#  layui.each(data.slist, function(index, item){  
+												var createAt = new Date(item.created_at).Format("yyyy-MM-dd hh:mm:ss");
+
+										}}
+					                     <tr>
+					                     	<td>{{item.author_name}}</td>
+					                     	<td>{{item.author_email}}</td>
+					                     	<td>{{createAt}}</td>
+					                     	<td>{{item.title}}</td>
+					                     	<td>{{item.message}}</td>
+					                     </tr>
+  										{{#  }); }}
+					                     
+					                 </tbody>
+                                	<tfoot>
+                                	<tr>
+                                    	<td colspan="5">
+                                        	<ul class="pagination pull-right"></ul>
+                                    	</td>
+                                	</tr>
+                                	</tfoot>
+					            </table>
+	                    	</div>
+	                    </div>
+  					{{#  }); }}
+				</div>
+			</div>
+		</div>
+	</div>
+{{# } }}
+</script>
+  
+<script>
+var i=0,
+	gsTpl = gitsubmitDatas.innerHTML,
+	gsView = document.getElementById('gitsubmitDatas-view'),
+	gsDatas = [],
+	cur = null,
+	gsConf = null;
+	
+$.getJSON ("js/config.json", function (data){
+	gsConf = data.gitsubmit;
+	if(!gsConf) return false;
+	
+	$.ajax({
+		url: gsConf.connect + 'projects?private_token=' + gsConf.token,
+		type:"get",
+		success:function(data){
+			for(i = 0; i < data.length; i++) {
+				cur = data[i];
+		        <#list  user.projects as p>
+	        	if(cur.name == '${p.code}') {
+					$.ajax({
+						url: gsConf.connect + 'projects/' + cur.id + '/repository/commits?private_token=' + gsConf.token,
+						type:"get",
+						async: false,
+						success:function(gsData){
+							gsDatas.push({
+								id: cur.id,
+								name: cur.name,
+								slist: gsData
+							})
+						}
+					})
+	        	}
+				</#list>
+			}
+	
+			if(gsDatas.length > 0) {
+				$('#gitsubmitDatas-view').attr('hasData', 1);
+			}
+			laytpl(gsTpl).render(gsDatas, function(gsHtml){
+				gsView.innerHTML = gsHtml;
+				for(i = 0; i < data.length; i++) {
+					$("#gsFootable" + data[i].id).footable();
+				}
+			});
+			
+		}
+	});
+
+});	
+</script>

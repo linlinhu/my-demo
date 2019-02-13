@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<title>移动端触摸事件</title>
+		<style>
+			#inputValue{
+				width: 200px;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid;
+				margin: 20px;
+				font-size: 20px;
+				position: absolute;
+				top:100px;
+				left: 100px;
+			}
+			#stick{
+				display: inline-block;
+				height: 25px;
+				width: 1px;
+				background: black;
+				position: absolute;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='box'>
+			<div id = 'inputValue' ontouchstart="getPosition()">
+				<span id="textBox">1234567890</span>
+			</div>
+			<input type="button" value="删除" ontouchstart="deleteWord()"/>
+		</div>
+		<span id="stick"></span>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script>
+		var _inputValue = document.getElementById('inputValue');
+		var textBox = document.getElementById('textBox');
+		var index='',
+			text = textBox.innerText,
+			textWidth = textBox.offsetWidth,//文本的总宽度
+        	textLen = textBox.innerText.length,//
+        	wordWidth = textWidth/textLen,
+        	_left = _inputValue.offsetLeft,//输入框的left
+        	_top = _inputValue.offsetTop,//输入框的top
+        	stick = document.getElementById('stick'),
+        	timer = '';
+		function getPosition(){
+			var touch = event.touches[0],//获取第一个触点
+	        	x = touch.pageX, //页面触点X坐标
+	        	y = touch.pageY,
+	        	temp = 1; //页面触点Y坐标
+	        textLen = textBox.innerText.length;
+			index = Math.floor((x-_left)/wordWidth)
+			if(index>textLen){
+				index = textLen
+			}
+			stick.style.left = index*wordWidth+_left +'px';
+	        stick.style.top = _top+4 +'px';
+	        stick.style.display='inline-block';
+	        timer = setInterval(function(){
+	        	temp *= -1;
+	        	if(temp==1){
+	        		stick.style.display='inline-block';
+	        	}else{
+	        		stick.style.display='none';
+	        	}
+	        },600)
+		}
+		function deleteWord(){
+			var temp='';
+			console.log(index)
+			if(index===''){
+				temp = textBox.innerText.length-1;
+				text=text.replace(text[temp],'');
+			}else{
+				index -=1;
+				temp=index;
+				if(temp>=0){
+					stick.style.left = index*wordWidth+_left +'px';
+					text=text.replace(text[temp],'');
+				}
+			}
+			textBox.innerHTML=text;
+			textWidth = textBox.offsetWidth;
+		}
+     	document.onkeyup=function(event){
+		 var e=event?event:window.event;
+		 clearInterval(timer);
+		 stick.style.display='none';
+		 if(e.keyCode==13){
+		  //alert('您按了回车键。');
+		 }
+		};
+		
+	</script>
+</html>

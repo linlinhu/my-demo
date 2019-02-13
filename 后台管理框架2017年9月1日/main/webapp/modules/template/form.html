@@ -1,0 +1,126 @@
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+					<#if model??>修改<#else>添加</#if>模板
+					</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('manage')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" id="templateForm">
+                        <input type="hidden" name="id">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">模板名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">模板标题</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="title">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">模板用途</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="code">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	var icon = "<i class='fa fa-times-circle'></i> ",
+	   	loading = null,
+	   	i = 0;
+
+	loading = layer.load();
+	$.ajax({
+      	url:'${base}datadic/tplScope/list',
+      	type:"get",
+      	success:function(data){
+      		layer.close(loading);
+      		for (i = 0; i < data.length; i++) {
+      			$('#templateForm select[name = "code"]').append('<option value="' + data[i].code + '">' + data[i].name + '</option>');
+      		}
+      		<#if model??>
+      		$('#templateForm input[name = "id"]').val('${model.id}');
+      		$('#templateForm input[name = "name"]').val('${model.name}');
+      		$('#templateForm input[name = "title"]').val('${model.title}');
+      		$('#templateForm select[name = "code"]').val('${model.code}');
+      		</#if>
+      	}
+	})
+      
+	$("#templateForm").validate({
+       	rules: {
+			name: {
+			    required: true,
+			    minlength: 4,
+			    maxlength: 20
+			},
+			title: {
+               required: true,
+               minlength: 4,
+               maxlength: 20
+           	},
+           	code: {
+               required: true,
+           	}
+       	},
+       	messages: {
+			name: {
+		       	required: icon + "请输入模板名称",
+		       	minlength: icon + "模板名称必须4个字符以上",
+		       	maxlength: icon + "模板名称必须20个字符以下"
+		  	},
+			title: {
+		       	required: icon + "请输入模板标题",
+		      	minlength: icon + "模板标题必须4个字符以上",
+		       	maxlength: icon + "模板标题必须20个字符以下"
+		   	},
+		   	code: {
+		       	required: icon + "请选择模板用途"
+		   	}
+       	},
+       	submitHandler:function(form){
+			loading = layer.load();
+	       	$.ajax({
+	           	url:'${base}dtm/saveOrUpdate?' + $("#templateForm").serialize(),
+	           	type:"post",
+	           	success:function(data){
+	           		layer.close(loading);
+	           		data = JSON.parse(data);
+	           		if (!data.success) {
+	           			layer.alert(data.message ? data.message : '保存失败',{icon: 5});
+	           		} else {
+	           			goPage('manage');
+	           		}
+	           	}
+			})
+       	}            
+	});
+</script>

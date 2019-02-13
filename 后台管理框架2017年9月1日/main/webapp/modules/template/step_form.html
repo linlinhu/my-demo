@@ -1,0 +1,100 @@
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><#if group??>修改<#else>添加</#if>步骤</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('mGroup/${modelId}/all')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="get" class="form-horizontal" id="stepForm">
+                        <input type="hidden" name="modelId" value="${modelId}">
+                        <input type="hidden" name="id">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">步骤名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">步骤顺序</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="index">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    
+	var icon = "<i class='fa fa-times-circle'></i> ",
+		loading = null;
+      
+
+	<#if group??>
+	$('#stepForm input[name = "id"]').val('${group.id}');
+	$('#stepForm input[name = "name"]').val('${group.name}');
+	$('#stepForm input[name = "index"]').val('${group.index}');
+	</#if>
+    $("#stepForm").validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2,
+                maxlength: 20
+                
+            },
+            index: {
+                required: true,
+                maxlength: 2
+            }
+        },
+        messages: {
+            name: {
+                required: icon + "请输入步骤名称",
+                minlength: icon + "步骤名称必须2个字符以上",
+                maxlength: icon + "步骤名称必须20个字符以下"
+            },
+            index: {
+                required: icon + "请输入步骤顺序",
+                maxlength: icon + "步骤顺序必须2个数字以下",
+            }
+        },
+        submitHandler:function(form){
+        	loading = layer.load();
+        	$.ajax({
+            	url:'${base}dtm/mGroup/saveOrUpdate?' + $("#stepForm").serialize(),
+            	type:"post",
+            	success:function(data){
+            		data = JSON.parse(data);
+            		
+            		layer.close(loading);
+            		if (!data.success) {
+            			layer.alert(data.message ? data.message : '保存失败',{icon: 5});
+            		} else {
+            			goPage('mGroup/${modelId}/all');
+            		}
+            	}
+            })
+        }     
+    });
+</script>

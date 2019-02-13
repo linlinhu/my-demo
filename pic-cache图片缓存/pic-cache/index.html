@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/lazyimg.js"></script>
+		<script src="js/async.min.js"></script>
+		<script src="js/down.js"></script>
+		<script type="text/javascript">
+			mui.init();
+		</script>
+		
+
+		<img data-src="http://pic41.nipic.com/20140518/18521768_133448822000_2.jpg" src=""  class="lazy">
+
+		<button onclick="test()">test</button>
+		<button onclick="clearCache()">clear</button>
+		<script>
+			
+			//使用
+			function clearCache() {
+				mui.toast("清除缓存")
+				plus.storage.clear()
+			}
+
+			function test() {
+				var getImgs = function(cb) {
+					var imgs = document.querySelectorAll("img");
+					imgs = mui.slice.call(imgs);
+					imgs.forEach(function(item, index, array) {
+						item.setAttribute("data-src", "http://pic41.nipic.com/20140518/18521768_133448822000_2.jpg")
+					});
+					cb && cb();
+				}
+				Lazyimg.lazyLoad();
+			}
+		</script>
+
+	</body>
+
+</html>

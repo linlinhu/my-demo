@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>自定义事件</title>
+	</head>
+	<body>
+		<div id="box">自定义事件</div>
+		<button>点击</button>
+	</body>
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script>
+		$('#box').click(function(){
+			console.log('点击')
+		})
+		setInterval(function(){
+			var box = document.getElementById('box');
+			if(document.createEvent){
+				//alert('支持document.createEvent')
+				var event = document.createEvent('MouseEvent');
+				event.initEvent('click',true,true);
+				box.dispatchEvent(event);
+				
+			}else{
+				//alert('支持document.createEventObject')//兼容IE
+				var event = document.createEventObject('MouseEvents');
+				box.fireEvent("onclick",event)
+			}
+			
+		},1000)
+	</script>
+</html>

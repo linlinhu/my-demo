@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+	<script type="text/javascript">
+	if(sessionStorage.isLogout){
+		 window.history.replaceState(null,null,"")
+		 window.location.replace("/login")
+	}
+	</script>
+    <title>银玺办公系统</title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+	
+    <!--[if lt IE 8]>
+    <script>
+        alert('H+已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+    </script>
+    <![endif]-->
+	<link href="../resources/static/img/favicon.ico" rel="shortcut icon">
+    <link href="../resources/static/js/plugins/layui/css/layui.css" rel="stylesheet">
+    <link href="../resources/static/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../resources/static/css/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="../resources/static/css/animate.css" rel="stylesheet">
+    
+    <link href="../resources/static/css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link href="../resources/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../resources/static/css/plugins/periodsPicker/periodsPicker.css" rel="stylesheet">
+    <link href="../resources/static/js/plugins/layer/laydate/theme/default/laydate.css" rel="stylesheet">
+    <script src="../resources/static/js/plugins/layer/laydate/laydate.js"></script>
+    <link href="../resources/static/css/plugins/codemirror/codemirror.css" rel="stylesheet">
+    <link href="../resources/static/css/plugins/codemirror/ambiance.css" rel="stylesheet"> 
+    <link href="../resources/static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="../resources/static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+    
+    <link href="../resources/static/css/style.css" rel="stylesheet">
+    
+    <link href="../resources/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+    
+</head>
+<!-- oncontextmenu='return false'  
+ ondragstart='return false'
+ onselectstart ='return false' onselect='document.selection.empty()' oncopy='document.selection.empty()' onbeforecopy='return false' onmouseup='document.selection.empty()'-->
+<body class="fixed-sidebar full-height-layout gray-bg">
+
+    <div id="wrapper">
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close"><i class="fa fa-times-circle"></i>
+            </div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element" style="text-align:center">
+                            <span>
+                            	<img  class="img-circle" src="../resources/static/img/nvsheng.jpg" />
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                               <span class="block m-t-xs"><strong class="font-bold">
+                              		Winnie
+                               </strong></span>
+                                <span class="text-muted text-xs block">研发部</span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="logo-element"><img src="../resources/static/img/logo.png" width="30" height="30"></div>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="start/index.html">
+                            <i class="fa fa-home"></i> 
+                            <span class="nav-label">主页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-calendar"></i>
+                            <span class="nav-label">考勤管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="modules/daily_report/manage.html">日报管理</a></li>
+                            <li><a class="J_menuItem" href="leave/index">请假管理</a></li>
+                        </ul>
+                    </li>
+                   <li>
+                        <a href="#">
+                            <i class="fa fa-user"></i>
+                            <span class="nav-label">人员管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="employee/index?limit=8&page=1">员工管理</a></li>
+                            <li><a class="J_menuItem" href="group/index?limit=8&page=1">群组管理</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-cog"></i>
+                            <span class="nav-label">系统管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="dtm/manage">模板管理</a></li>
+                            <li><a class="J_menuItem" href="flow/list">流程管理</a></li>
+                            <li><a class="J_menuItem" href="config/index">系统配置</a></li>
+                        </ul>
+                    </li>
+                  
+                   
+                    <!-- 
+                    <li>
+                        <a class="J_menuItem" href="modules-code_review-form/module">
+                            <i class="fa fa-eye"></i> 
+                            <span class="nav-label">codereview</span>
+                        </a>
+                    </li> -->
+                  <!--   <li>
+                        <a href="#">
+                            <i class="fa fa-cog"></i>
+                            <span class="nav-label">系统配置</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="${base}config/index">参数配置</a></li>
+                        </ul>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                       <!--  <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                            <div class="form-group">
+                              <input type="text" placeholder="当前版本：${version}" class="form-control" name="top-search" readonly="readonly" id="top-search" style="width:260px"> 
+                             
+                            </div>
+                        </form>  -->
+                        		
+                    </div>
+
+                    <ul class="nav navbar-top-links navbar-right">
+                    	     
+	                    <li class="hidden-xs">
+	                        <a href="javascript:;" class="logout" ><i class="fa fa-sign-out"></i>
+	                           	注销登录
+	                        </a>
+	                    </li>        
+	                    <li class="dropdown hidden-xs">
+	                        <a class="right-sidebar-toggle" aria-expanded="false">
+	                            <i class="fa fa-tasks"></i> Release Notes
+	                        </a>
+	                    </li>
+	                </ul>
+
+                </nav>
+               
+            </div>
+            <div class="row content-tabs">
+                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+                </button>
+                <nav class="page-tabs J_menuTabs">
+                    <div class="page-tabs-content">
+                       <a href="javascript:;" class="active J_menuTab" data-id="start/main" data-index="0" iframe-index="start/">主页</a> 
+                    </div>
+                </nav>
+                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+                </button>
+                <div class="btn-group roll-nav roll-right">
+                    <button class="dropdown J_tabClose"  data-toggle="dropdown">关闭操作<span class="caret"></span>
+
+                    </button>
+                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                        <li class="J_tabShowActive"><a>定位当前选项卡</a></li>
+                        <li class="divider"></li>
+                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a> </li>
+                        <li class="divider"></li>
+                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
+                    </ul>
+                </div>
+                <a href="http://192.168.0.222/zentao/" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 前往禅道</a>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+                 <div class="J_iframe " name="iframe0" width="100%" height="100%" data-id="start/main" seamless></div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">&copy; 银玺科技办公系统</div>
+            </div>
+        </div>
+        <!--右侧部分结束-->
+        <div id="right-sidebar" >
+         <#include "releaseNotes.html">
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="../resources/static/js/jquery-2.1.1.min.js"></script>
+    <script src="../resources/static/js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="../resources/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../resources/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../resources/static/js/plugins/layer/layer.min.js"></script>
+	<script src="../resources/static/js/plugins/layui/layui.js" ></script>
+    <!-- 自定义js -->
+    <script src="../resources/static/js/hplus.js?v=3.2.0"></script>
+    <!-- <script src="../resources/static/js/contabs.js"></script> -->
+    <script src="../resources/static/js/content.js"></script>
+    <script src="../resources/static/js/dataLoad.js"></script>
+
+    <!-- 第三方插件 -->
+    <!-- DROPZONE -->
+    <script src="../resources/static/js/plugins/dropzone/dropzone.js"></script>
+    <script src="../resources/static/js/plugins/pace/pace.min.js"></script>
+    <script src="../resources/static/js/plugins/footable/footable.all.min.js"></script>
+    <script src="../resources/static/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="../resources/static/js/plugins/validate/messages_zh.min.js"></script>
+    <script src="../resources/static/js/plugins/validate/compatible_bootstrap.js"></script>
+    <script src="../resources/static/js/plugins/iCheck/icheck.min.js"></script>
+	<script src="../resources/static/js/plugins/periodsPicker/periodsPicker.js" ></script>
+    <!-- CodeMirror -->
+    <script src="../resources/static/js/plugins/codemirror/codemirror.js"></script>
+    <script src="../resources/static/js/plugins/codemirror/mode/javascript/javascript.js"></script>
+    <!-- CHOSEN -->
+    <script src="../resources/static/js/plugins/chosen/chosen.jquery.js" ></script>
+	
+	
+	<script>
+		var base = '../webapp/modules/';
+		// $(".logout").click(function(){
+		// 	layer.confirm('是否确定注销登录？', {
+		// 	    btn: ['确定','取消']//按钮
+		// 	  //  shade: true //不显示遮罩
+		// 	}, function(){
+			
+		// 		$.ajax({
+		// 			url:"${base}signout",
+		// 			type:"get",
+		// 			success:function(data){
+		// 				 window.history.replaceState(null,null,"")
+		// 				 sessionStorage.isLogout = true;
+		// 				 window.location.replace("/login")
+		// 			}
+		// 		})
+			   
+		// 	}, function(){
+		// 	});
+		// })
+	</script>
+	
+	
+	
+
+</body>
+
+</html>

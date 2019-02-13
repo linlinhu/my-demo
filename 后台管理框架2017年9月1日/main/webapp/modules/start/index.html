@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css" href="${base}css/modules/start/index.css">
+<div class="wrapper wrapper-content" id="startWrapper">
+	<#include "leave/auditlist.html"/>
+	<div class="row">
+		<#include "dailyReport/notice.html"/>
+		<#include "leave/forecast.html"/>
+		<#include "programs/kanban.html"/>
+	</div>
+	<#include "programs/compile.html"/>
+  	<div class="row">
+		<#include "programs/submit.html"/>
+  	</div>
+</div>
+
+<script>
+var i = 0,
+	j = 0,
+	row = $("#startWrapper .row"),
+	rowLen = row.length,
+	findDiv = null,
+	findDivLen = 0,
+	contentLen = 0;
+
+for(i = 0; i < rowLen; i++) {
+	findDiv = $(row[i]).find('div');
+	findDivLen = findDiv.length;
+	if(findDivLen == 0){
+		contentLen += $(row[i]).html().trim().length;
+	}
+	for(j = 0; j < findDivLen; j++) {
+		contentLen += $(findDiv[j]).html().trim().length;
+	}
+}
+
+if(contentLen == 0) {
+	$("#startWrapper").html('<div class="middle-box text-center animated fadeInDown">'+
+		'<h1><i class="fa fa-bell-o"></i></h1>'+
+	    '<h3 class="font-bold">亲爱的${user.account}, 今日没有与您相关事务的呈现</h3>'+
+	'</div>');
+}
+</script>
+    
+    
+  
+
+    
+	
+   
+
+
+

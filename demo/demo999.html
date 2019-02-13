@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>demo</title>
+    </head>
+    <body>
+        
+        <div id='box1' class="item">
+            <div class="test1" code="code1" disabled="true">content test1</div>
+            <p class="test2" code="code2">content test2</p>
+            <p class="test3" code="code3">content test3</p>
+        </div>
+        <div id='box2' class="item">2</div>
+    </body>
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+    <script>
+        /*function Person() {
+
+        };
+        Person.prototype.name = 'winnie';
+        Person.prototype.sayName = function(){
+            console.log('My name is '+ this.name);
+        };
+        let person1 = new Person();
+        person1.name = '胡林林';
+        person1.address = '成都';
+        let person2 = new Person();
+        console.log(person1.hasOwnProperty('name'));
+        console.log(person2.hasOwnProperty('name'));
+        console.log(Object.keys(person1))*/
+
+        function getRandoms(data) {
+            if(!data) {
+                alert('参数不能为空');
+                return false;
+            };
+            let num = data.n,
+                max = 32,
+                min = 2,
+                numReg = /^[0-9]+$/,
+                arr = [],
+                temp = null,
+                status = true,
+                len = 0;
+
+            console.log(num,numReg.test(num))
+            if(!(num && numReg.test(num) && num > 0)) {
+                alert('数组的长度应该是大于0的整数');
+                return false;
+            };
+            if(!(num && numReg.test(num) && num <= (max - min + 1))) {
+                alert('数组的长度应该是' + (max - min + 1) +'的整数');
+                return false;
+            };
+            while(len < num) {
+                temp = Math.floor(Math.random() * 31) + 2;
+                if(arr.length == 0) {
+                    arr.push(temp);
+                    status = false;
+                } else {
+                    arr.forEach(function(value, index) {
+                        if(value == temp) {
+                            status = false;
+                        }
+                    })
+                };
+                if(status) {
+                    arr.push(temp);
+                };
+                status = true;
+                len = arr.length;
+            };
+            return arr;
+        }
+        console.log(getRandoms({n:10}));
+        function fn1() {
+            var result = [];
+            for(var i = 0; i < 10; i++) {
+                result[i] = function(num){
+                    return num
+                }(i)
+            }
+            return result;
+        };
+        console.log(fn1()[1]);
+        (function fn2(count){
+            for(var i=0; i < count; i++){
+                /*alert(i);*/
+            }
+            console.log('i', i);
+        })(5)
+        var age = 18;
+        console.log(window.age)
+          function Socket(wsUrl){
+        try {
+            this._connect(wsUrl);
+        } catch (e) {
+            console.warn(e);
+            try {
+                this._connect(wsUrl);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    }
+    if(typeof(Worker)!=="undefined") {
+        var worker=new Worker('js/modules/util/worker.js');
+        worker.postMessage({url:'http://192.168.0.39:8113/central-con/queryAllBusinessStateBySubsystemCode?subsystemCode=door',methodType:'GET'});
+        worker.onmessage=function(e){
+            console.log('worker.js的回传值',e.data)
+            let data = e.data;
+            data=JSON.parse(data);
+        }
+    } else {
+        console.log('不支持 web worker')
+    }
+    
+    </script>
+</html>

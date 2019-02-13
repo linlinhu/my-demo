@@ -1,0 +1,134 @@
+<#setting datetime_format='yyyy-MM-dd HH:mm:ss'>
+<div class="wrapper-content">
+	<div class="row">
+		<div class="col-sm-12">
+		    <div class="ibox float-e-margins">
+		        <div class="ibox-title">
+		            <h5>请假列表</h5>
+		            <div class="ibox-tools">
+		                <a class="btn btn-primary btn-xs" href="javascript:goPage('form')">
+		                    <i class="fa fa-plus"></i>我要请假
+		                </a>
+		            </div>
+		        </div>
+		        <div class="ibox-content">
+		            
+					<div class="filter-line">
+	                	<form method="get" id="leaveSearchForm">
+							<input type="hidden" name="page">
+							<input type="hidden" name="dateArr">
+	                        <input placeholder="请假日期" class="form-control" id="leaveSearchDateShowText" onclick="openLeaveSearchDate()" readonly="true">
+                            <input placeholder="用户姓名" class="form-control" type="text" name="match" value="${match!''}" role="user-params">
+                            
+                            <button type="button" class="btn btn-primary" role="submit">搜索</button>
+                            <button type="button" class="btn btn-default" role="reset">重置</button>
+	                 	</form>
+	                </div>
+		            <table class="footable table table-stripped toggle-arrow-tiny" id="leaveTable" data-paging="false">
+		                <thead>
+		                        <tr>
+		                            <th data-toggle="true">申请日期</th>
+		                            <th>请假人</th>
+		                            <th>请假天数</th>
+		                            <th>请假类型</th>
+		                            <th>审核状态</th>
+		                            <th data-hide="all">请假详情</th>
+		                            <th data-hide="all">请假原因</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                    	<#if pageResult.resultList?size != 0 >
+		                        <#list pageResult.resultList as dr>
+			                        <tr>
+			                            <td>${dr.createTime?number_to_datetime}</td>
+			                            <td>${dr.account}</td>
+			                            <td>${dr.leaveTimes?size*0.5}</td>
+			                            <td>${dr.leaveType}</td>
+			                            <td>
+			                            
+			                            <#if dr.flowStatus = 1>
+			                           	 审核中
+			                            <#elseif  dr.flowStatus = 0>
+			                			已通过
+			                            <#else>
+			                           	 未通过
+			                            </#if>
+			                            
+			                            </td>
+			                            <td>
+			                            
+			                            <#list dr.leaveTimes as t>
+			                            ${t.showText}<br>
+			                            </#list>
+			                            </td>
+			                            <td>${dr.reason?replace('huanhang','<br>')}</td>
+			                        </tr>
+		                        </#list>
+		                        <#else>
+		                        	<tr><td colspan=7>没有相关的请假信息</td></tr>
+		                        </#if>
+		                    </tbody>
+		            </table>
+		            
+		            <div class="text-right" id="leavePage"></div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+
+<script>
+   	var totalPage = '${pageResult.totalPageNum!1}',
+		curr = '${pageResult.currentPage!1}',
+		leaveDateArr = '${dateArr!""}',
+		leaveTimePeriods = leaveDateArr.length > 0 ? JSON.parse(leaveDateArr) : [],
+		lspickedShowText = '';
+	
+	for(i = 0; i < leaveTimePeriods.length; i++) {
+		lspickedShowText += leaveTimePeriods[i].showText + ',';
+	}
+	if (lspickedShowText.length > 0) {
+		$("#leaveSearchDateShowText").val(lspickedShowText.substring(0, lspickedShowText.length-1));
+		$("#leaveSearchForm input[name='dateArr']").val(leaveDateArr);
+	}
+	
+	
+   	initTable('leave', totalPage, curr);
+    
+    
+    function openLeaveSearchDate(){
+    	var i = 0,
+    		leaveDateArr = $("#leaveSearchForm input[name='dateArr']").val(),
+    		leaveTimePeriods = leaveDateArr.length > 0 ? JSON.parse(leaveDateArr) : [],
+			leaveSearchDatePicker = null;
+    	
+    	layer.open({
+			type: 1,
+			title: '选择请假日期',
+			skin: 'layui-layer-rim', //加上边框
+			area: ['454px', '400px'], //宽高
+			content: '<div class="leave-calen" id = "leaveSearchDate" style="margin:10px"></div>',
+  			btn: ['已选择', '取消'],
+  			btn1: function(){
+  				var lspickedTimes = leaveSearchDatePicker.getPickedPeriods(),
+  					lspickedShowText = '';
+  				
+  				for(i = 0; i < lspickedTimes.length; i++) {
+  					lspickedShowText += lspickedTimes[i].showText + ',';
+  				}
+  				$("#leaveSearchDateShowText").val(lspickedShowText.substring(0, lspickedShowText.length-1));
+  				$("#leaveSearchForm input[name='dateArr']").val(JSON.stringify(lspickedTimes));
+  			}
+  		});
+  		setTimeout(function(){
+  			leaveSearchDatePicker = new PeriodsPicker({
+  		    	id: 'leaveSearchDate',
+  		   		showWeeksAmount: 2,
+  		   		timePeriods: leaveTimePeriods,
+  		   		beginDate: new Date('2015-01-01')
+  		   	});
+  			leaveSearchDatePicker.load();
+  		})
+    }
+    
+</script>

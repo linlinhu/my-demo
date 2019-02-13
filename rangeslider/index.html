@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>demo</title>
+        <link rel="stylesheet" type="text/css" href="css/ion.rangeSlider.css">
+        <link rel="stylesheet" type="text/css" href="css/ion.rangeSlider.skinFlat.css">
+        <style type="text/css">
+        	.js-irs-0 {
+        		margin: 30px 10px;
+        	}
+        </style>
+    </head>
+    <body>
+        
+        
+        <div id="ionrange_14"></div>
+        <input name="timeValue" class="my-value">
+    </body>
+    <script type="text/javascript" src="js/vendor/jquery-1.12.3.min.js" ></script>
+    <script type="text/javascript" src="js/ion-rangeSlider/ion.rangeSlider.js"></script>
+    <script>
+        $("#ionrange_14").ionRangeSlider({
+            min: 100,
+            max: 500,
+            from: 500,
+            onStart: function (data) {
+                let value = null,
+                	max = timeFormat({value:data.max}),
+                	min = timeFormat({value:data.min});
+                setTimeout(function(){
+                	value = timeFormat({value:data.from_pretty});
+	                data.slider.find('.irs-max').html(max);
+	                data.slider.find('.irs-min').html(min);
+	                changeMsg({value:value,el:data.slider[0]});
+                },1)
+                
+            },
+            onChange: function (data) {
+                let value = null;
+                value = timeFormat({value:data.from_pretty});
+                changeMsg({value:value,el:data.slider[0]});
+
+            },
+            onFinish: function (data) {
+            	let value = null;
+                value = timeFormat({value:data.from_pretty});
+                changeMsg({value:value,el:data.slider[0]});
+            },
+            onUpdate: function (data) {
+                let value = null,
+                	max = timeFormat({value:data.max}),
+                	min = timeFormat({value:data.min});
+                console.log(data)
+                setTimeout(function(){
+                	value = timeFormat({value:data.from_pretty});
+	                data.slider.find('.irs-max').html(max);
+	                data.slider.find('.irs-min').html(min);
+	                changeMsg({value:value,el:data.slider[0]});
+                },1)
+     
+            }
+        });
+        var ionrange = $("#ionrange_14").data("ionRangeSlider");
+       $("#ionrange_14").attr('value',200)
+        function timeFormat(data){
+        	var curValue =  data.value,
+                hour =  parseInt(curValue/60),
+                minute =  curValue%60,
+                str = '';
+            hour = '0' + hour.toString();
+            hour = hour.slice(-2);
+            minute = '0' + minute.toString();
+            minute = minute.slice(-2);
+            str = hour + ':' + minute;
+            return str;
+        };
+        function changeMsg(data) {
+        	let value = data.value;
+        		el = $(data.el);
+        	$('.my-value').val(value);
+            el.find('.irs-single').html(value).css({'margin-left':'-5px'});
+            console.log("el.find('.irs-single')", el.find('.irs-single').html())
+        }
+        $('.my-value').on('change',function(){
+        	let value = $(this).val();
+        	value = getMinutes(value);
+        	console.log('value',value)
+        	ionrange.update({
+			    from: value
+			});
+        	
+        });
+       	function getMinutes(time){//将时间转换成分钟
+			time = time.split(':');
+			return time[0]*60 + time[1]*1;	
+		};
+
+
+    </script>
+</html>

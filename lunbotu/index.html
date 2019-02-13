@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>京东主页</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	
+</head>
+<body>
+<div class="head">
+</div>
+<div id="main">
+	
+
+	<div id="middle">
+		<div id="box">
+			<ul>
+				<li><img src="images/m1.jpg"></li>
+				<li><img src="images/m2.jpg"></li>
+				<li><img src="images/m3.jpg"></li>
+				<li><img src="images/m4.jpg"></li>
+				<li><img src="images/m5.jpg"></li>
+				<li><img src="images/m6.jpg"></li>
+				<li><img src="images/m7.jpg"></li>
+				<li><img src="images/m8.jpg"></li>
+			</ul>
+			<div id="pages"></div>
+			<div id="prev"><</div>
+			<div id="next">></div>
+		</div>
+
+		<div class="next">
+			
+		</div>
+	</div>
+
+</div>
+<div id="last">
+	
+	<p>倒计时:<span></span></p>
+</div>
+
+	
+ <script type="text/javascript" src="js/tools.js"></script>
+ <script type="text/javascript">
+ //轮播
+ 	var _box=$("#box"),
+ 		_pages=$("#pages"),
+ 		lis=$("li",_box),
+ 		_ul=$("ul",_box)[0],
+ 		len=lis.length;
+ 	var _first=lis[0].cloneNode(true),
+ 		_last=lis[len-1].cloneNode(true);
+ 	_ul.appendChild(_first);
+ 	_ul.insertBefore(_last,lis[0]);
+ 	len=lis.length;
+ 	var index=1;
+ 		nextIndex=2;
+ 		imgWidth=_box.offsetWidth;
+ 	_ul.style.width=len*imgWidth+"px";
+ 	var _X=_box.offsetLeft;
+ 	_ul.style.left=-imgWidth+"px";
+ 	//自动轮播
+ 	var timer=setInterval(move,2000);
+ 	//添加鼠标滑入滑出效果
+ 	_box.onmouseenter=function(){
+ 		clearInterval(timer);
+ 	}
+ 	_box.onmouseleave=function(){
+ 		timer=setInterval(move,2000);
+ 	}
+
+ 	//添加小圆点
+ 	for(var i=0;i<len-2;i++){
+ 		var _div=document.createElement("div");
+ 		_pages.appendChild(_div);
+ 	}
+ 	var circles=$("div",_pages);
+ 	circles[0].style.background="red";
+ 	//给小圆点绑定点击事件
+ 	for(let i=0;i<len-2;i++){
+ 		circles[i].onclick=function(){
+ 			nextIndex=i+1;
+ 			move()
+ 		}
+ 	}
+
+ 	//添加左右翻页
+ 	var _prev=$("#prev"),
+ 		_next=$("#next");
+ 	_next.onclick=move;
+ 	_prev.onclick=function(){
+ 		nextIndex=index-1;
+ 		move();
+ 	}
+ 	function move(){
+ 		var _left=-nextIndex*imgWidth;
+ 		for(let i=0;i<len-2;i++){
+ 			circles[i].style.background="white";
+ 		}
+ 		var currIndex=0;
+ 		if(nextIndex===0){
+ 			currIndex=len-3
+ 		}else if(nextIndex===len-1){
+ 			currIndex=0
+ 		}else{
+ 			currIndex=nextIndex-1
+ 		}
+ 		circles[currIndex].style.background="red";
+
+ 		animate(_ul,500,{left:_left},function(){//调用函数实现轮播
+			index=nextIndex;
+			nextIndex++;
+			if(nextIndex>=len){  
+			//当循环到最后一张图片时，切换到第二张（相同图片，克隆产生）
+				_ul.style.left=-imgWidth+"px";
+				index=1;
+				nextIndex=2;
+			}
+			if(nextIndex<=1){
+				_ul.style.left=-(len-2)*imgWidth+"px";
+				nextIndex=len-1;
+				index=len-2;	
+			}
+			
+		});
+ 	}
+
+//table切换
+ /*	var _r_next=$("#r_next"),
+ 	_spans=$("span",_r_next),
+ 	_bs=$("b",_r_next);
+ 	_bs_len=_bs.length;
+ 	_spans[0].style.color="red";
+ 	_bs[0].style.display="block";
+ 	for(let i=0;i<_bs_len;i++){
+ 		_spans[i].onmouseenter=function(){
+ 			for(let j=0;j<_bs_len;j++){
+ 				_bs[j].style.display="none";
+ 				_spans[j].style.color="black";
+ 			}
+ 			_bs[i].style.display="block";
+ 			_spans[i].style.color="red";
+ 		}
+ 	}*/
+
+ 	//2小时倒计时
+ 	var long=2*60*60;
+ 	var _time=$("span",$("#last"))[0];
+ 	var daojishi=setInterval(fn,1000);
+ 	function fn(){
+ 		var temp=long;
+ 		var second=temp%60;
+ 		temp=Math.floor(temp/60);
+ 		var min=temp%60;
+ 			temp=Math.floor(temp/60);
+ 		var hour=temp;
+ 		long-=1;
+	 	var result=hour+":"+min+":"+second;
+	 	_time.innerHTML=result;
+ 	}
+// 	//侧边导航
+// 	var _one=$("#one"),
+// 		_nav=$("li",_one),
+// 		_sbunav=$("p",$("#aside"));
+// 		for(let i=0;i<_nav.length;i++){
+// 			_nav[i].onmouseenter=function(){
+// 				_sbunav[i].style.display="block";
+// 			}
+// 		}
+// 	console.log(_nav,_sbunav);
+ </script>
+</body>
+</html>

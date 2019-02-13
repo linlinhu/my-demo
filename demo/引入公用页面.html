@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!--<object data="http://www.williamlong.info/archives/134.html" style="border:0px" height="400" width="600"></object>-->
+		<!--<link rel="import" href="demo2.html" id="page3" />-->
+		<link rel="import" href="demo1.html" id="page1">
+		<title>引入公用页面</title>
+		<style>
+			.left{
+				float: left;
+			}
+			.right{
+				float: right;
+			}
+			#page3{
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="left">这里是页面内容</div>
+		<frame src="demo1.html" scrolling="No" noresize="noresize" id="leftFrame" />
+		<iframe name="content_frame" marginwidth=0 marginheight=0 width="600" height="400" src="http://www.williamlong.info/archives/134.html" frameborder=0 scrolling="auto">
+		</iframe>
+		<div class="right">
+			<include src='demo2.html'></include>
+			<include src='pagination.html'></include>
+		</div>
+		<div id="page1"></div>
+		<div id="page2"></div>
+		
+	</body>
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/include.js"></script>
+	<script>
+		/*$('#page1').load('./demo1.html');*/
+		/*$('#page2').load('http://www.williamlong.info/archives/134.html');*/
+//		console.log(page3.import.body.innerHTML,'啦啦啦啦');
+	</script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>多选</title>
+		<link rel="stylesheet" type="text/css" href="chosen.css">
+		<style>
+			.pic{
+				width: 120px;
+				height: 120px;
+				border: 1px solid red;
+			}
+			.ani{
+				background-image: url(../images/animation.gif);
+				background-size: 240px 180px;
+				background-position: -20px -20px;
+			}
+			.pic img{
+				height: 120px;
+				width: 120px;
+				border-bottom-left-radius: 5px;
+				background-image: url();
+			}
+			select{
+				width: 200px;
+			}
+		</style>
+
+	</head>
+	<body>
+		<!-- <select class="form-control dis-select" name="productTemplete" multiple='multiple'> -->
+		<select class="form-control" name="productTemplete1">
+           	<option value='0'>0</option>
+           	<option value='1'>1</option>
+           	<option value='2'>2</option>
+        </select>
+       <select class="form-control dis-select" name="productTemplete2" multiple='multiple'>
+           	<option value='0'>0</option>
+           	<option value='1'>1</option>
+           	<option value='2'>2</option>
+        </select>
+	</body>
+	<script type="text/javascript" src="../js/jquery-2.1.1.min.js" ></script>
+	<script type="text/javascript" src="chosen.jquery.js" ></script>
+	<script>
+		//初始化chosen插件
+   		$('.dis-select').chosen({
+   			allow_single_deselect: true, //删除选项
+   			max_selected_options: 999, //多选上限
+   			disable_search:true, //禁用搜索框
+   			placeholder_text_multiple:'请选择分销商' //提示值
+   		}); 
+    	
+    	$('.dis-select').on('chosen:ready', function(e, params) {
+ 			$(".dis-select").val(whiteList)//设置值  
+ 			$('.dis-select').trigger('chosen:updated');//更新选项  
+ 			console.log('准备就绪')
+ 		});
+    	
+    	//获取select的内容
+    	$('.dis-select').on('change', function(e, params) {
+		 console.log($(this).val())
+		});
+		
+	</script>
+</html>

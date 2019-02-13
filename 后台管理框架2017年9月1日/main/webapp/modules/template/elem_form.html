@@ -1,0 +1,155 @@
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+					<#if item??>修改<#else>添加</#if>条目
+                    </h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('mGroupItem/${modelId}/${groupId}/all')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="get" class="form-horizontal" id="elemForm">
+                        <input type="hidden" name="modelGroupId" value="${groupId}">
+                        <input type="hidden" name="id">
+                        <input type="hidden" name="itemToken">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">条目名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">模式</label>
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="type">
+                                    <option value="1">单行文本</option>
+                                    <option value="2">多行文本</option>
+                                    <option value="3">复选框</option>
+                                    <option value="4">单选框</option>
+                                    <option value="5">图片</option>
+                                    <option value="6">数字</option>
+                                    <option value="7">时分</option>
+                                    <option value="8">年月日</option>
+                                    <option value="9">年月日时分秒</option>
+                                    <option value="10">文件</option>
+                                    <option value="11">字典项</option>
+                                    <option value="12">表格项</option>
+                                    <option value="13">列表</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否必填</label>
+                            <div class="col-sm-10">
+                                <label class="radio-inline i-checks">
+                                    <input type="radio" value="true" name="required">是</label>
+                                <label class="radio-inline i-checks">
+                                    <input type="radio" value="false" name="required">否</label>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">优先级</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="index">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">默认值</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="value">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">正则表达式</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="regex">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	<#if item??>
+		$('#elemForm input[name = "id"]').val('${item.id}');
+		$('#elemForm input[name = "name"]').val('${item.name}');
+		$('#elemForm select[name = "type"]').val('${item.type}');
+		$("#elemForm input[name='required'][value=${item.required?string('true','false')}]").attr("checked",true); 
+		$('#elemForm input[name = "itemToken"]').val('${item.itemToken!""}');
+		$('#elemForm input[name = "index"]').val('${item.index!""}');
+		$('#elemForm input[name = "value"]').val('${item.value!""}');
+		$('#elemForm input[name = "regex"]').val('${item.regex!""}');
+	</#if>
+   	var icon = "<i class='fa fa-times-circle'></i> ",
+   		loading = null;
+    
+   	$('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+    $("#elemForm").validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 1,
+                maxlength: 8
+            },
+            type: {
+                required: true
+            },
+            itemToken: {
+                required: true,
+            }
+        },
+        messages: {
+        	name: {
+                required: icon + "请输入条目名称",
+                minlength: icon + "条目名称必须1个字符以上",
+                maxlength: icon + "条目名称必须8个字符以下"
+            },
+            type: {
+                required: icon + "请选择模式"
+            },
+            itemToken: {
+                required: icon + "请输入TOKEN"
+            }
+        },
+        submitHandler:function(form){
+        	loading = layer.load();
+        	$.ajax({
+            	url:'${base}dtm/mGroupItem/saveOrUpdate?' + $("#elemForm").serialize(),
+            	type:"post",
+            	success:function(data){
+            		layer.close(loading);
+            		data = JSON.parse(data);
+            		if (!data.success) {
+            			layer.alert(data.message ? data.message : '保存失败',{icon: 5});
+            		} else {
+            			goPage('mGroupItem/${modelId}/${groupId}/all');
+            		}
+            	}
+            })
+        }            
+	});
+</script>

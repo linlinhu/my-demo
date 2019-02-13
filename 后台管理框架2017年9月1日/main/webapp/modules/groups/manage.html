@@ -1,0 +1,58 @@
+
+<link href="${base}css/modules/groups/manage.css" rel="stylesheet">
+
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>群组</h5>
+                </div>
+                <div class="ibox-content">
+                   
+					<div class="filter-line">
+                    <form class="input-group" id="groupSearchForm">
+                        <input class="form-control kayValue" type="text" placeholder="请输入群组名称"  name="match" value="${match!''}" role="user-params">
+                        <input class="page" type="hidden" name="page" value="${pagedResult.currentPage}">
+                        <button type="button" class="btn btn-primary" role ="submit">搜索</button>
+                     	<button type="button" class="btn" role = "reset" >重置 </button>
+                    </form>
+					</div>
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8"  id="groupTable">
+                        <thead>
+                                <tr>
+                                	<th>序号</th>
+                                	<th>群组名称</th>
+                                    <th>群组描述</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody totalPage="${pagedResult.totalPageNum}">
+                            	<#list pagedResult.resultList as data>
+                                <tr groupId="${data.id}">
+                                	<td>${(pagedResult.currentPage-1) * 8 + data_index + 1}</td>
+                                	<td>${data.name}</td>
+                                    <td>${data.desc}</td>
+                                    <td class="operation">
+                                    	<a href="javascript: goPage('${data.id}/groupUsers')" class="groupdetail">
+                                    		<i class="fa fa-search-plus text-navy"></i> 详情
+                                    	</a>
+                                    </td>
+                                </tr>
+                           		</#list>
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                    </table>
+                    <div class="text-right" id="groupPage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="${base}js/modules/groups/manage.js"></script>
+    
+
+  
+

@@ -1,0 +1,85 @@
+<#if leaveList?size != 0>
+<div class="col-sm-4 col-xs-12">
+	<div class="holiday">
+		<div class="ibox-title">
+			<h5>请假预报</h5>
+		</div>
+		<div class="ibox-content no-padding">
+          	<table class="footable table table-stripped toggle-arrow-tiny align-center" id="leaveReportFootable" data-page-size="5">
+	            <tbody>
+	            	<#list leaveList as data>
+	                <tr>
+	                	<td>
+	                	<#setting datetime_format='yyyy-MM-dd HH:mm'>
+	                	<#assign amBegin = "${.now?string('yyyy-MM-dd')} 09:00"/>
+	                	<#assign pmBegin = "${.now?string('yyyy-MM-dd')} 13:30"/>
+	                	<#assign am = 0/>
+	                	<#assign pm = 0/>
+	                	<#assign fu = 0/>
+	                	<#assign periodOfDay = ''/>
+	                	<#assign leaveDayAmount = data.leaveTimes?eval?size*0.5/>
+	                	<#list data.leaveTimes?eval as t >
+	                		<#assign leaveTime="${t.beginTime?number_to_datetime}"/>
+	                		<#if leaveTime == amBegin>
+	                		<#assign am = 1/>
+	                		<#elseif leaveTime == pmBegin>
+	                		<#assign pm = 1/>
+	                		<#else>
+	                		<#assign fu = 1/>
+	                		</#if>
+	                	</#list>
+	                	<#if am == 1>
+	                		<#assign periodOfDay = '上午'/>
+	                	</#if>
+	                	<#if pm == 1>
+	                		<#assign periodOfDay = '下午'/>
+	                	</#if>
+	                	
+	                	<#if am == 1 && pm == 1>
+	                		<#assign periodOfDay = '全天'/>
+	                	</#if>
+	                	
+	                	<#if periodOfDay == '' && fu == 1>
+	                		<#assign periodOfDay = '未来'/>
+	                	</#if>
+	                	<b>${data.account}</b>
+	                	请了
+	                	${data.leaveType}，
+	                	<b>${periodOfDay}</b>
+	                	<#if leaveDayAmount > 1>
+	                	${leaveDayAmount}天
+	                	</#if>
+	                	<#if leaveDayAmount == 1 && periodOfDay != '全天'>
+	                	${leaveDayAmount}天
+	                	</#if>
+	                	<#if leaveDayAmount == 0.5 && periodOfDay == '未来'>
+	                	半天
+	                	</#if>
+	                	不在
+	                	</td>
+	                </tr>
+	               </#list>
+	            </tbody>
+	            <tfoot>
+	                <tr>
+	                    <td colspan="5">
+	                        <ul class="pagination pull-right"></ul>
+	                    </td>
+	                </tr>
+	            </tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+<script>
+    $('#leaveReportFootable').footable();
+</script>
+</#if>
+
+
+    
+	
+   
+
+
+

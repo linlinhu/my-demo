@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="box" style="background: hotpink;"></canvas>
+		<canvas id="myCanvas"></canvas>
+		<img src="../images/m1.jpg"/>
+	</body>
+	<!--<script src="demo/js/jquery-2.1.1.min.js"></script>-->
+	<script>
+		var box=document.getElementById('box'),
+			boxCon = box.getContext('2d');
+		boxCon.fillStyle='red';
+		boxCon.moveTo(20,20);
+		boxCon.lineTo(50,50);
+		var src = '<img src="../images/m1.jpg"/>';
+			/*boxCon.drawImage(src,0,0,100,100)*/
+		var c=document.getElementById("myCanvas");
+		var ctx=c.getContext("2d"); //创建context对象
+		ctx.fillStyle="red";  //fillStyle可以是CSS颜色、渐变、或者图案
+		ctx.fillRect(0,0,150,75);  //fillRect(x,y,width,height) 定义矩形当前的填充方
+		ctx.drawImage(src,10,10);
+		
+	</script>
+	
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>tree-table</title>
+	<link rel="stylesheet" type="text/css" href="css/jquery.treetable.css"/>
+    <link rel="stylesheet" type="text/css" href="css/jquery.treetable.theme.default.css"/>
+	<link rel="stylesheet" type="text/css" href="css/screen.css"/>
+    <style type="text/css">
+        html, body, iframe {
+      width: 100%;
+      height: 100%;
+    }
+    </style>
+</head>
+<body>
+<div>
+    <iframe src='http://192.168.0.203:8081/group1/M00/10/18/oYYBAFuOYXKAXT1QAAGHH3NwNxw932.jpg' width='100%' height='100%' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe>
+    <table id="treeTable" style="width:800px">  
+        <tr>  
+            <td>名字</td> 
+            <td>URL</td> 
+            <td>操作<td>
+        </tr>  
+        <tr data-tt-id="a" data-tt-branch='true'>  
+            <td><span class='folder'>a</a></span></td> 
+            <td>a.jsp</td> 
+            <td><button>edit</button> <td>
+        </tr>  
+        <tr data-tt-id="a1" data-tt-parent-id="a">  
+            <td>a1</td>
+            <td>a1.jsp</td>  
+            <td><button>edit</button> <td>
+        </tr>  
+        <tr data-tt-id="b" data-tt-branch='true'>  
+            <td>b</td>  
+            <td>b.jsp</td> 
+            <td><button>edit</button> <td>
+        </tr>  
+        <tr data-tt-id="b1" data-tt-parent-id="b">  
+            <td>b1</td>  
+            <td>b1.jsp</td> 
+            <td><button>edit</button> <td>
+        </tr>  
+    </table>
+    <table id="example-advanced">
+        <caption>
+            <a href="#" onclick="jQuery('#example-advanced').treetable('expandAll'); return false;">Expand all</a>
+            <a href="#" onclick="jQuery('#example-advanced').treetable('collapseAll'); return false;">Collapse all</a>
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Kind</th>
+            <th>Size</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-tt-id='5' data-tt-branch='true'>
+            <td><span class='folder'>Perl</span></td>
+            <td>Folder</td>
+            <td>--</td>
+        </tr>
+        <tr data-tt-id='5-1' data-tt-parent-id='5'>
+            <td><span class='folder'>wxPerl</span></td>
+            <td>Folder</td>
+            <td>--</td>
+        </tr>
+        <tr data-tt-id='5-1-1' data-tt-parent-id='5-1'>
+            <td><span class='file'>INSTALL.pod</span></td>
+            <td>File</td>
+            <td>8.26 KB</td>
+        </tr>
+        <tr data-tt-id='5-1-2' data-tt-parent-id='5-1'>
+            <td><span class='file'>todo.txt</span></td>
+            <td>File</td>
+            <td>2.3 KB</td>
+        </tr>
+        <tr data-tt-id='7' data-tt-branch='true'>
+            <td><input type="checkbox" value="2"><span class='folder'>RubyCocoa</span></td>
+            <td>Folder</td>
+            <td>--</td>
+        </tr>
+        <tr data-tt-id='8'>
+            <td><input type="checkbox" value="1"><span class='folder'>wxWidgets</span></td>
+            <td>Folder</td>
+            <td>--</td>
+        </tr>
+        <tr data-tt-id='9'>
+            <td><input type="checkbox" value="4"><span class='file'>Xcode Tools License.rtf</span></td>
+            <td>File</td>
+            <td>18.79 KB</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="test"></div>
+</div>
+
+
+	
+
+</body>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.treetable.js"></script>
+
+<script type="text/javascript">
+    $('.test').load('test.html');
+    
+
+    $("#example-advanced").treetable({
+    expandable: true,
+    onNodeExpand: function () {
+        var node = this;
+        var childSize = $("#treetable").find("[data-tt-parent-id='" + node.id + "']").length;
+        console.log("childSize = ",childSize)
+        if (childSize > 0) {
+            return;
+        }
+        // 一下是加载后的处理逻辑
+        let data= {
+                    data: [
+                        {tt_id:10,tt_parent_id:node.id,db_name:'db_name1',tbl_name:'tbl_name1',have_child:true},
+                        {tt_id:11,tt_parent_id:node.id,db_name:'db_name2',tbl_name:'tbl_name1',have_child:false},
+                        {tt_id:12,tt_parent_id:node.id,db_name:'db_name3',tbl_name:'tbl_name3',have_child:false}
+                    ]
+                };
+                console.log("childSize = ",childSize,node)
+        if (childSize > 0) {
+            return;
+        }
+        for (var i=0; i<data.data.length; i++) {
+            var rows = ''
+            if ($("#" + data.data[i].tt_id).length === 0) {
+                if (data.data[i].have_child === false) {
+
+                   rows = rows + "<tr id='" + data.data[i].tt_id + "' data-tt-id='" + data.data[i].tt_id + "' data-tt-parent-id='" +
+                        data.data[i].tt_parent_id + "'>"+
+                        "<td>" + "<span class='file' style='padding: 0px;'>"+
+                            "<a href='/component/v1/hive_table/?db_id=" +
+                            data.data[i].db_id + "&db_name=" + data.data[i].db_name + "&tablename=" + data.data[i].tbl_name +
+                            "' target='_blank' style='color: #337ab7;'> " + data.data[i].tbl_name + "</a></span>" +
+                                data.data[i].tbl_name +
+                            "</td>"+
+                            "<td>" + data.data[i].db_name + "</td>"+
+                            "<tb>20k</td>" +
+                        "</tr>"
+                } else {
+                    // 判断是否重复
+                    if ($("#" + data.data[i].tt_id).length === 0) {
+                        rows = rows + "<tr  data-tt-branch='true' id='" + data.data[i].tt_id + "' data-tt-id='" +
+                            data.data[i].tt_id + "' data-tt-parent-id='" + data.data[i].tt_parent_id + "'><td>" +
+                            "<span class='folder' style='padding: 0px;'><a href='/component/v1/hive_table/?db_id=" +
+                            data.data[i].db_id + "&db_name=" + data.data[i].db_name + "&tablename=" + data.data[i].tbl_name +
+                            "' target='_blank'> " + data.data[i].tbl_name + "</a></span></td> <td>" + data.data[i].db_name + "</td></tr>"
+                    }
+                }
+                console.log(node, rows);
+                $("#example-advanced").treetable("loadBranch", node, rows);// 插入子节点
+                $("#example-advanced").treetable("expandNode", node.id);// 展开子节点
+
+            }
+        }
+    }
+});
+
+</script>
+</html>

@@ -1,0 +1,123 @@
+ <div class="wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 class="form-title">参数配置</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="get" class="form-horizontal" id="configForm">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">日报白名单</label>
+                                <div class="col-sm-10">
+                                   <select class="form-control daily-select" multiple='multiple' whiteList="${dailyReportWhiteList}">
+                                   		<#list users as user>
+                                   			<option value="${user.account}"
+                                   				<#list dailyReportWhiteList?split(",") as acc>
+                                   				<#if acc=user.account>
+                                   				selected= false            				
+                                   				</#if>
+                                   				</#list>
+                                   			 >${user.account} ${user.realName}</option>
+                                   		</#list>
+                                   </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">补日报次数</label>
+                                <div class="col-sm-10">
+                                   <input type="number" class="form-control" name="dailyReportTurnInLateCount" value="${dailyReportTurnInLateCount}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">统计日报时间</label>
+                                <div class="col-sm-10">
+                                    <input type="time" class="form-control" name="dailyReportStatisticsTime" aria-required="true" value="${dailyReportStatisticsTime}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">提醒发送时间</label>
+                                <div class="col-sm-10">
+                                    <input type="time" class="form-control" name="dailyReportRemindTime"  value="${dailyReportRemindTime}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" onclick="configSubmit()">提交</button>
+                                    <button class="btn btn-white" type="button" onclick="configReset()">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    	
+   		//初始化chosen插件
+   		$('.daily-select').chosen({
+   			allow_single_deselect: true, //删除选项
+   			max_selected_options: 20, //多选上限
+   			disable_search:true, //禁用搜索框
+   			placeholder_text_multiple:'请选择账号' //提示值
+   		}); 
+    	
+    	$('.daily-select').on('chosen:ready', function(e, params) {
+ 			$(".daily-select").val(whiteList)//设置值  
+ 			$('.daily-select').trigger('chosen:updated');//更新选项  
+ 			console.log('准备就绪')
+ 		});
+    	
+    	//获取select的内容
+    	$('.daily-select').on('change', function(e, params) {
+		 console.log(e, params);
+		 console.log($(this).val())
+		});
+    	
+    	//提交
+    	function configSubmit(){
+    		var params = $('#configForm').serializeObject(),
+				whiteList = $('.daily-select').val().join(',');
+    		
+			params.dailyReportWhiteList = whiteList;
+    		parent.layer.alert('确认提交？', {
+				  skin: 'layui-layer-lan', //样式类名
+				  closeBtn: 1
+				}, function(){
+					$.ajax({ 
+						url: 'config/submit', 
+						type:'post',
+						data:params,
+						success: function(res, error){
+							res = JSON.parse(res);
+							if(res.success){
+								parent.layer.msg('提交成功',{
+									icon: 1,
+									time: 3000,
+									background: [0.8, '#393D49']
+								}); 
+							} else {
+								parent.layer.msg('提交失败',{
+									icon: 2,
+									time: 3000,
+									background: [0.8, '#393D49']
+								});
+							}
+				        }
+					});
+			});
+    	}
+    	
+    	//重置
+    	function configReset(){
+    		goPage("index")
+    	}
+    	
+    </script>
+    
+    

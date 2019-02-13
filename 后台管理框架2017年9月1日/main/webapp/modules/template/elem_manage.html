@@ -1,0 +1,119 @@
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>步骤详情-条目列表</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-primary btn-xs" href="javascript: goPage('mGroupItem/form?groupId=${groupId}&modelId=${modelId}')">
+                            <i class="fa fa-plus"></i>添加条目
+                        </a>
+
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('mGroup/${modelId}/all')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <input type="text" class="form-control input-sm m-b-xs" id="filter"
+                           placeholder="搜索表格...">
+
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8" data-filter=#filter id="elemManageFootable">
+                        <thead>
+                                <tr>
+                                    <th data-toggle="true">条目名称</th>
+                                    <th>模式</th>
+                                    <th>是否必填</th>
+                                    <th>优先级</th>
+                                    <th data-hide="all">TOKEN</th>
+                                    <th data-hide="all">默认值</th>
+                                    <th data-hide="all">正则表达式</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<#if items?? && (items?size > 0)>
+        							<#list items as m>
+                                    <tr>
+                                        <td>${m.name!''}</td>
+	                                    <td>
+	                                    <#if m.type??>
+	                                    <#switch m.type> 
+	                                    <#case 2>多行文本<#break>
+	                                    <#case 3>复选框<#break>
+	                                    <#case 4>单选框<#break>
+	                                    <#case 5>图片<#break>
+	                                    <#case 6>数字<#break>
+	                                    <#case 7>时分<#break>
+	                                    <#case 8>年月日<#break>
+	                                    <#case 9>年月日时分秒<#break>
+	                                    <#case 10>文件<#break>
+	                                    <#case 11>字典项<#break>
+	                                    <#case 12>表格项<#break>
+	                                    <#case 13>列表<#break>
+										<#default> 
+										单行文本
+										</#switch> 
+                                    	</#if>
+                                    	</td>
+	                                    <td>${m.required?string('是','否')}</td>
+	                                    <td>${m.index!''}</td>
+	                                    <td>${m.itemToken!''}</td>
+	                                    <td>${m.value!''}</td>
+	                                    <td>${m.reqex!''}</td>
+	                                    <td><a href="javascript: goPage('mGroupItem/form?groupId=${groupId}&modelId=${modelId}&itemId=${m.id}')"><i class="fa fa-pencil text-navy"></i>编辑</a>
+	                                    <a href="javascript:removeElem(${m.id});"><i class="fa fa-trash text-navy"></i>删除</a>
+	                                    </td>
+                                    </tr>
+                                    </#list>
+                                <#else>
+                                   		<tr><td colspan="5">暂无数据</td></tr>
+                                </#if>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#elemManageFootable').footable();
+
+
+    function removeElem(id) {
+    	var loading = null;
+    	
+        layer.confirm('确认删除吗', {
+          icon: 2,
+          btn: ['确认','取消'] //按钮
+        }, function(){
+        	loading = layer.load();
+        	$.ajax({
+            	url:'${base}dtm/mGroupItem/' + id + '/delete',
+            	type:"post",
+            	success:function(data){
+            		layer.close(loading);
+            		data = JSON.parse(data);
+            		if (!data.success){
+            			layer.msg(data.message ? data.message : '删除失败！', {icon: 5});
+            		} else {
+            			layer.msg('删除成功！', {icon: 6});
+            			goPage('mGroupItem/${modelId}/${groupId}/all');
+            		}
+            	}
+            });
+        },function(){
+    		layer.close(loading);
+        });
+    }
+
+</script>

@@ -1,0 +1,11 @@
+.title {
+	background: #fff;
+	font-size: 20px;
+	text-align: center;
+	border-bottom: 1px solid #f3f3f4;
+}
+table {
+	background: #fff;
+	border-radius: 3px;
+	overflow: auto;
+}

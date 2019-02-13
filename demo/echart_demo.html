@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>demo</title>
+		<style>
+			.echart_container {
+				width: 400px;
+				height: 300px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="echart_container" id="myChart"></div>
+        <div class="echart_container" id="myChart2"></div>
+        <div class="echart_container" id="myChart3"></div>
+        <div class="echart_container" id="myChart4"></div>
+		
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script type="text/javascript" src="js/echarts.js"></script>
+	<script>
+		/*var myChart = echarts.init(document.getElementById('myChart')),*/
+		var myChart = echarts.init($('#myChart')[0]),
+		// 指定图表的配置项和数据
+        	option = {
+            title: {
+                text: '销量统计'
+            },
+            tooltip: {
+                trigger : 'axis',  
+                axisPointer : { // 坐标轴指示器，坐标轴触发有效  
+                    type : 'shadow' // 默认为直线，可选为：'line' | 'shadow'  
+                } 
+            },
+            legend: {
+                data:['销量','库存']
+
+            },
+            xAxis: {
+                nameTextStyle: {
+                    color:['#f3f5f5']
+                },
+                data: [{value:'1月',textStyle: {
+                fontSize: 20,
+                color: 'red'
+            }},"羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {
+               
+                name : '单位: 次'
+
+            },
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 50],
+                markLine: {
+	                data: [
+	                    {type: 'average', name: '平均值'},
+	                ],
+                    lineStyle: {
+                        color:'#619dca'
+                    }
+	            }
+            },{
+                name : '投标人名称',  
+                            type : 'bar',  
+                            stack : '次数',  
+                            label : {  
+                                normal : {  
+                                    show : true,  
+                                    position: 'top'  
+                                }  
+                            },  
+                            data : [8, 30, 26, 19, 15, 20],  
+                            color:['#0087ED'],  
+                            itemStyle: {  
+                                normal: {  
+                                barBorderRadius: 5,  
+                                }  
+                            },  
+                            barWidth: 30,  
+            }],
+            grid: {
+            	show: true,
+            	containLabel:true,
+            	backgroundColor:'#999',
+            	color:'#333'
+            },
+            toolbox:{
+            	show: true,
+            	showTitle: true
+            }
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        var myChart2 = echarts.init(document.getElementById('myChart2')),
+            option2 = {
+               title: {
+                text: '高新区培训费用柱状图',
+                textStyle: {
+                    color:'#666666',
+                    fontSize: '20px'
+                }
+            },
+            tooltip: {},
+            legend: {
+                data:['费用']
+
+            },
+            xAxis: {
+                data: ["1月","2月","3月","4月","5月","6月"]
+            },
+            yAxis: {},
+            series: [
+            {
+        type: 'bar',
+        itemStyle: {
+            normal: {
+                color: 'transparent'
+            }
+        },
+        silent: true,
+        barWidth: 0,
+        barGap: '0', // Make series be overlap
+        data: [60]
+    },{
+                
+                            type : 'bar',  
+                          
+                            label : {  
+                                normal : {  
+                                    show : true,  
+                                    position: 'top'  
+                                }  
+                            },  
+                            data : [8, 30, 26, 19, 15, 20],  
+                           
+                            barWidth: 30,  
+            }],
+            grid: {
+                show: true,
+                containLabel:true,
+                backgroundColor:'#999',
+                color:'#333'
+            },
+            toolbox:{
+                show: true,
+                showTitle: true
+            } 
+            };
+	 myChart2.setOption(option2);
+
+     var pieDataReander = function(data,subSystemCode){
+                // 指定图表的配置项和数据
+                data = [{value:335, name:'直接访问 >'},
+                        {value:310, name:'邮件营销 >'},
+                        {value:234, name:'联盟广告 >'},
+                        {value:135, name:'视频广告 >'},
+                        {value:1548, name:'搜索引擎 >'}];
+                var option = {
+                        tooltip : {
+                            trigger: 'item',
+                            /*formatter: "{a} <br/>{b} : {c} ({d}%)"*/
+                            formatter: function(res){
+                                    /*console.log(res)*/
+                                return "{a} <br/>{b} : {c} ({d}%)"
+                            }
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: ['直接访问 >','邮件营销 >','联盟广告 >','视频广告 >','搜索引擎>']
+                        },
+                        series : [
+                            {
+                                name: '访问来源',
+                                type: 'pie',
+                                radius : '55%',
+                                center: ['50%', '60%'],
+                               label: {
+                                    normal: {
+                                        show: true,
+                                        formatter: '{b}: {c}({d}%)'
+                                    }
+                                },
+                                data:data,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                };
+                if(data.length > 0) {
+                    // 基于准备好的dom，初始化echarts实例
+                   
+                   /*  var myChart = echarts.init($(el + ' .sub-sys-type-' + subSystemCode + ' .below')[0]); */
+                  var myChart = echarts.init($('.echart_container')[2]);
+                    myChart.setOption(option);
+                    var triggerAction = function(action, selected) {
+                        legend = [];
+
+                        for ( name in selected) {
+                            if (selected.hasOwnProperty(name)) {
+                                legend.push({name: name});
+                            }
+                        }
+
+                        myChart.dispatchAction({
+                            type: action,
+                            batch: legend
+                        });
+                    };
+
+                    var isFirstUnSelect = function(selected) {
+
+                        var unSelectedCount = 0;
+                        for ( name in selected) {
+                            if (!selected.hasOwnProperty(name)) {
+                                continue;
+                            }
+
+                            if (selected[name] == false) {
+                                ++unSelectedCount;
+                            }
+                        }
+                        return unSelectedCount==1;
+                    };
+
+                    var isAllUnSelected = function(selected) {
+                        var selectedCount = 0;
+                        for ( name in selected) {
+                            if (!selected.hasOwnProperty(name)) {
+                                continue;
+                            }
+
+                            // 所有 selected Object 里面 true 代表 selected， false 代表 unselected
+                            if (selected[name] == true) {
+                                ++selectedCount;
+                            }
+                        }
+                        return selectedCount==0;
+                    };
+
+                    myChart.on('legendselectchanged', function(obj) {
+                        var selected = obj.selected;
+                        var legend = obj.name;
+
+                        // 使用 legendToggleSelect Action 会重新触发 legendselectchanged Event，导致本函数重复运行
+                        // 使得 无 selected 对象
+                        if (selected != undefined) {
+
+                           /* if (isFirstUnSelect(selected)) {
+                                triggerAction('legendToggleSelect', selected);
+                            } else if (isAllUnSelected(selected)) {*/
+                                triggerAction('legendSelect', selected);
+
+                            /*}*/
+                        }
+                        console.log('obj',obj)
+                        console.log('legend',legend)
+                        return false;
+                    });
+                }
+            };
+            pieDataReander();
+            option = {
+
+              legend: {
+                  orient: 'vertical',
+                  x: 'left',
+                  data:['政治风险','廉政风险','渎职风险','绩效风险']
+              },
+              graphic: {
+                type: 'text',
+                left: 'center',
+                top: 'center',
+                z: 2,
+                zlevel: 100,
+                style: {
+                    text: '您好',
+                    x: 100,
+                    y: 100,
+                    textAlign: 'center',
+                    fill: 'red',
+                    width: 100,
+                    height: 100,
+                    fontSize: '50'
+                }
+              },
+              series: [
+                  {
+                      name:'访问来源',
+                      type:'pie',
+                        avoidLabelOverlap: false,
+                      radius: ['50%', '70%'],
+                     
+                      data:[
+                          {value:25, name:'政治风险'},
+                          {value:25, name:'廉政风险'},
+                          {value:25, name:'渎职风险'},
+                          {value:25, name:'绩效风险'}
+                      ]
+                  }
+              ]
+          }
+          var myChart = echarts.init($('.echart_container')[3]);
+        myChart.setOption(option);
+	</script>
+</html>

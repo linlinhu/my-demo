@@ -1,0 +1,52 @@
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>流程模型管理</h5>
+                    <div class="ibox-tools">
+		                <a class="btn btn-primary btn-xs" href="javascript:goPage('form')">
+		                    <i class="fa fa-plus"></i>新建流程模型
+		                </a>
+		            </div>
+                </div>
+                <div class="ibox-content">
+                    
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8" data-filter=#emp-filter>
+                       		 <thead>
+                                <tr>  
+                                	<th>序号</th>                                 
+                                    <th>名称</th>
+                                    <th>用途</th>
+                                    <th>操作</th>                                    
+                                </tr>
+                            </thead>
+                            <tbody >
+                            	<#list list as m>
+                                <tr class="msg">
+                                	<td>${m_index+1}</td>
+                                    <td>${m.name}</td>
+                                    <td>${m.category}</td>                                   
+                                    <td class="tdOperations">                                       
+                                        <#if m.deploymentId??>
+                                            <a class="undeploy" href="javascript:;" data-id="${m.id}"><i class="fa fa-stop text-navy"></i> 取消发布</a>
+                                        <#else>
+                                            <a class="edit" href="javascript:;"  data-id="${m.id}"><i class="fa fa-pencil text-navy"></i> 编辑</a>
+                                            <a class="deploy" href="javascript:;" data-id="${m.id}"><i class="fa fa-play text-navy"></i> 发布</a>
+                                            <a class="delete" href="javascript:;" data-id="${m.id}"><i class="fa fa-remove text-navy"></i> 删除</a>
+                                        </#if>                                        
+                                    </td>
+                                </tr>
+                            	</#list>
+                            </tbody>                            
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${base}js/modules/workflow/manage.js"></script>
+
+    
+

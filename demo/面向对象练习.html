@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="UTF-8">
+		<title>面向对象</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script>
+		//属性访问器
+		var book = {
+			_year: 2004,
+			edition: 1
+		};
+		Object.defineProperty(book, "year", {
+			get: function() {
+				return this._year
+			},
+			set: function(newValue) {
+				if(newValue>2005) {
+					this._year = newValue;
+					edition = newValue - 2004;
+				}
+			}
+		});
+		console.log(book._year,book.edition,book.year);
+		book.year = 2006;
+		console.log(book._year,book.edition,book.year);
+
+		//工厂模式
+		function createPerson(name, age, job) {
+			var o = new Object();
+			o.name = name;
+			o.age = age;
+			o.job = job;
+			o.sayName = function() {
+				console.log(this.name)
+			};
+			return o;
+		};
+		person1 = createPerson('小明', 29, 'teacher');
+		person2 = createPerson('韩梅梅', 20, 'doctor');
+		person1.sayName();
+		console.log(person2.job);
+
+		//构造函数模式
+		function Person(name, age, job) {
+			this.name = name;
+			this.age = age;
+			this.job = job;
+			this.sayName = function() {
+				console.log(this.name);
+			};
+		};
+		Person.prototype.add = "成都";
+		person3 = new Person("不满意", 18, "student");
+		person3.add = '遂宁';
+		person4 = new Person("不稀奇", 19, "student");
+		person3.sayName();
+		// console.log(person3.add);
+		// console.log(person4.add);
+		// console.log(person3.hasOwnProperty('add'));
+		// console.log(person4.hasOwnProperty('add'));
+		// console.log(person3.constructor == Person);
+		// console.log(person3 instanceof Person);
+		// console.log(person3 instanceof createPerson);
+		// console.log(person3 instanceof Object);
+		// console.log(Person.prototype.isPrototypeOf(person3))
+
+		//原型与in操作符
+		console.log("age" in person3);
+		console.log("add" in person3);
+
+		for (var prop in person4){
+			console.log(prop)
+		};
+		var keys = Object.keys(person3);
+		console.log(keys)
+
+
+		
+
+	</script>
+</html>

@@ -1,0 +1,157 @@
+<style>
+<!--
+
+-->
+.dr-content {
+height:70px;
+}
+.dr-content p {
+	margin:0;
+	line-height:20px;
+}
+.dr-search-form{
+	position: absolute;
+	left:50%;
+	margin-left:-351px;
+}
+</style>
+<div class="wrapper-content">
+	<div class="row">
+		<div class="col-sm-12">
+		    <div class="ibox float-e-margins">
+		        <div class="ibox-title">
+		            <h5>日报列表</h5>
+		            <div class="ibox-tools">
+		                <a class="btn btn-primary btn-xs" href="javascript:goPage('form')">
+		                    <i class="fa fa-plus"></i>写日报
+		                </a>
+		            </div>
+		        </div>
+		        <div class="ibox-content">
+					<div class="filter-line" style="border:0">
+	                	<form method="get" class="dr-search-form" id="drSearchForm">
+							<input type="hidden" name="page">
+	                        <input placeholder="提交日期" class="form-control layer-date" name="reportDay" id="drDate" value="${reportDay!''}" role="user-params" readonly>
+                            <input placeholder="提交人账号模糊匹配" class="form-control" type="text" name="match" value="${match!''}" role="user-params">
+                            <button type="button" class="btn btn-primary" role="submit">搜索</button>
+                            <button type="button" class="btn btn-default" role="reset">重置</button>
+	                 	</form>
+	                </div>
+	                <#assign defaultDate="${.now?date}">
+                   	<#if pageResult.resultList?size != 0 >
+                   	<#list pageResult.resultList as dr>
+	                <#setting datetime_format='HH:mm'>
+					<#setting date_format='yyyy-MM-dd'>
+	                <#assign nowDate="${.now?string('yyyy-MM-dd')}"/>
+	                <#assign lineDate="${dr.createTime?number_to_date}"/>
+	                <#if !drDate??>
+	               		<#assign defaultDate="${dr.createTime?number_to_date}">
+	               		<#assign drDate="${dr.createTime?number_to_date}">
+	               		<div class="ibox-title" style="border:none">
+	               		 <h5>${drDate}</h5>
+	               		</div>
+	                <#elseif drDate != "${dr.createTime?number_to_date}">
+						<#assign drDate="${dr.createTime?number_to_date}">
+						<div class="ibox-title" style="border:none">
+	               		 <h5>${drDate}</h5>
+	               		</div>
+	                </#if>
+		            <div class="social-feed-separated">
+	                    <div class="social-avatar">
+                            <#if dr.userInfo.gender == 'f'>
+                            	<img  class="img-circle" src="${base}img/nvsheng.jpg" />
+                            <#else>
+                            	<img class="img-circle" src="${base}img/nansheng.jpg" />
+                            </#if>
+	                    </div>
+	                    <div class="social-feed-box">
+	                        <div class="pull-right social-action dropdown">
+	                           	
+	                            <#if nowDate == lineDate && user.account == dr.account>
+	                            <a href="javascript:goPage('${dr.id}/toEdit?id=${dr.id}')"><i class="fa fa-pencil text-navy"></i> 修改</a>
+	                            <#else>
+	                            -
+	                            </#if>
+	                        </div>
+	                        <div class="social-avatar">
+	                            <a href="#">${dr.account}</a>
+	                            <small class="text-muted"> ${dr.createTime?number_to_datetime}</small>
+	                        </div>
+	                        <div class="social-body dr-content" onclick="showDetail(this)">
+	                            <p>
+	                               	<#if dr.todayFinish??>
+									今日完成：${dr.todayFinish?replace('huanhang',' ')}
+		                            </#if>&nbsp;
+	                               	<#if dr.plan??>
+									明日计划：${dr.plan?replace('huanhang',' ')}
+									</#if>&nbsp;
+									
+	                               	<#if dr.thinking?length gt 0>
+									问题与思考：${dr.thinking?replace('huanhang',' ')}
+		                            </#if>
+	                            </p>
+	                        </div>
+	                        <div class="social-body content-detail hide" onclick="hideDetail(this)">
+	                            <p>
+	                               	<#if dr.todayFinish??>
+									<b>今日完成：</b>${dr.todayFinish?replace('huanhang','<br>')}
+		                            </#if>
+	                               	<#if dr.plan??>
+									<br><b>明日计划：</b>${dr.plan?replace('huanhang','<br>')}
+									</#if>
+	                               	<#if dr.thinking?length gt 0>
+									<br><b>问题与思考：</b>${dr.thinking?replace('huanhang','<br>')}
+		                            </#if>
+	                            </p>
+	                        </div>
+	                	</div>
+	                </div>
+	                
+                    </#list>
+                    <#else>
+                    	<p class="text-center">暂无数据</p>
+                    </#if>
+		            <div class="text-right" id="drPage"></div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+
+<script>
+   	var totalPage = '${pageResult.totalPageNum!1}',
+		curr = '${pageResult.currentPage!1}';
+	
+   	initTable('dr', totalPage, curr, 20);
+       
+	laydate.render({
+    	elem: '#drDate', //指定元素
+    	format: 'yyyy-MM-dd',
+    	min: '2017-1-1',
+    	max: new Date().Format('yyyy-MM-dd'),
+    	value: new Date().Format('yyyy-MM-dd'),
+    	theme: '#0069b6',
+	});
+	
+	
+    $(".dr-content").each(function (i) {  
+        var divH = $(this).height();  
+        var $p = $("p", $(this)).eq(0);  
+        while ($p.outerHeight() > divH) {  
+            $p.text($p.text().replace(/(\s)*([a-zA-Z0-9]+|\W)(\.\.\.)?$/, "..."));  
+        };  
+    }); 
+    
+    function showDetail(self){
+    	$(self).addClass("hide");
+    	$(self).siblings('.content-detail').removeClass("hide");
+    }
+    
+    function hideDetail(self){
+    	$(self).addClass("hide");
+    	$(self).siblings('.dr-content').removeClass("hide");
+    }
+    
+
+
+</script>

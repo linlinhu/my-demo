@@ -1,0 +1,72 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">  
+<html>  
+ <head>  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">  
+  <title> FormData Demo </title>
+ </head>  
+ <body>  
+    <form name="form1" id="form1">  
+        <p>name:<input type="text" name="name" ></p>  
+        <p>gender:<input type="radio" name="gender" value="1">male <input type="radio" name="gender" value="2">female</p>  
+        <p>photo:<input type="file" name="photo" id="photo"></p>  
+        <p><input type="button" name="b1" value="submit" onclick="fsubmit()"></p>  
+    </form>  
+    <div id="result"></div>  
+    <div>
+	    上传文件 ： <input type="file" name = "file" id = "fileId" onchange="check()"/> 
+	    
+	    <button  type = "submit" name = "btn" value = "提交" id = "btnId" onclick="check()" /> 提交
+	</div>
+
+    
+    
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script> 
+  <script type="text/javascript">  
+    function fsubmit(){  
+        var data = new FormData($('#form1'));  
+        console.log('data',data)
+        $.ajax({  
+            url: 'server.php',  
+            type: 'POST',  
+            data: data,  
+            dataType: 'JSON',  
+            cache: false,  
+            processData: false,  //不处理发送的数据，因为data值是FormData对象，不需要对数据做处理 
+            contentType: false   //不设置Content-type请求头
+        }).done(function(ret){  
+            if(ret['isSuccess']){  
+                var result = '';  
+                result += 'name=' + ret['name'] + '<br>';  
+                result += 'gender=' + ret['gender'] + '<br>';  
+                result += '<img src="' + ret['photo']  + '" width="100">';  
+                $('#result').html(result);  
+            }else{  
+                alert('提交失敗');  
+            }  
+        });  
+        return false;  
+    } 
+    function check() {
+        
+        var objFile = document.getElementById("fileId");
+        if(objFile.value == "") {
+            alert("不能空")
+        }
+    	console.log(objFile.files);
+        console.log(objFile.files[0].size); // 文件字节数
+        
+        var files = $('#fileId').prop('files');//获取到文件列表
+        if(files.length == 0){
+            alert('请选择文件');
+        }else{
+            var reader = new FileReader();//新建一个FileReader
+            reader.readAsText(files[0], "UTF-8");//读取文件 
+            reader.onload = function(evt){ //读取完文件之后会回来这里
+                var fileString = evt.target.result; // 读取文件内容
+	        }
+	    }
+	    
+	} 
+  </script>  
+</body>  

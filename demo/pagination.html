@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			input{
+				color: darkcyan;
+				background: maroon;
+			}
+		</style>
+	</head>
+	<body>
+		<table>
+		<tbody id="main"></tbody> 
+		 <tfoot>
+		  <tr>
+		   <td colspan="11">
+		    <span class="water-table-listbtn"></span>
+		    <span class="water-table-page">
+		     <span id="pagemsg" class="water-table-pagemsg">当前0/0页</span>
+		     <input type="button" id="rpbtn" value="上页"/>
+		     <input type="button" id="npbtn" value="下页"/>
+		   </td>
+		  </tr>
+		 </tfoot>
+		</table>
+	</body>
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script>
+    var pagerow=5,
+        pagenum=1,
+        data=[];
+    function login(){
+          data=[1,2,3,4,5,6,7,8,9,10,11,12,23,14,15,16],
+          len=data.length,
+          rowcount=len,
+          pagecount=Math.ceil(rowcount/pagerow);
+          console.log(pagecount)
+          dolistpage(pagerow,pagenum,rowcount,pagecount);
+    }
+    login();
+    /*定义分页函数*/
+function dolistpage(pagerow,pagenum,rowcount,pagecount){
+      showPage(pagerow,pagenum,rowcount);
+     $("#rpbtn").attr("disabled", true);
+     $("#rpbtn").click(function(){
+      $("#npbtn").removeAttr("disabled");
+      if((pagenum-1)==1){
+        pagenum=1;
+        $("#rpbtn").attr("disabled", true);
+        
+      }else{
+        pagenum -= 1;
+        
+        $("#rpbtn").removeAttr("disabled");
+      } 
+      showPage(pagerow,pagenum,rowcount)
+     });
+     $("#npbtn").click(function(){
+      $("#rpbtn").removeAttr("disabled");
+      if ((pagenum + 1) >= pagecount){
+        pagenum=pagecount;
+       
+        $("#npbtn").attr("disabled", true);
+      }else{
+        pagenum += 1;
+        
+        $("#npbtn").removeAttr("disabled");
+      }
+      showPage(pagerow,pagenum,rowcount)
+     });
+     function showPage(pagerow,pagenum,rowcount){
+      var temp='',
+          html='';
+      for(var i=0;i<pagerow;i++){
+        temp=(pagenum-1)*pagerow+i;
+        if(temp<rowcount){
+          
+          html+="<p>"+data[temp]+"</p>"
+        }
+      }
+      $('#main').html(html)
+      $("#pagemsg").html(pagenum + "/" +pagecount + "页 共" +rowcount + "条");
+     }
+    }
+	</script>
+	
+</html>

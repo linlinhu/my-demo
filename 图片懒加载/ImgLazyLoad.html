@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>ImageLazyLoad</title>
+		<style type="text/css">
+			img{
+				height: 400px;
+				padding: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<img class="lazy" data-lazy-src="img/m1.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m2.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m3.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m4.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m1.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m2.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m3.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m4.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m1.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m2.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m3.jpg"><br>
+		<img class="lazy" data-lazy-src="img/m4.jpg"><br>
+	</body>
+	<script type="text/javascript" src="js/yahoo-dom-event.js"></script>
+	<script type="text/javascript"> 
+		KISSY.ImageLazyload({ 
+			mod: "manual", // 延迟模式。默认为 auto 
+			diff: 200 // 当前屏幕下多远处的图片开始延迟加载。默认两屏外的图片才延迟加载 
+		}); 
+	</script>
+	
+	
+</html>

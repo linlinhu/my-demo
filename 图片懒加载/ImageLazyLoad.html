@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>ImageLazyLoad</title>
+		<style type="text/css">
+			img{
+				height: 400px;
+				padding: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<img class="lazy" data-original="img/m1.jpg"><br>
+		<img class="lazy" data-original="img/m2.jpg"><br>
+		<img class="lazy" data-original="img/m3.jpg"><br>
+		<img class="lazy" data-original="img/m4.jpg"><br>
+		<img class="lazy" data-original="img/m1.jpg"><br>
+		<img class="lazy" data-original="img/m2.jpg"><br>
+		<img class="lazy" data-original="img/m3.jpg"><br>
+		<img class="lazy" data-original="img/m4.jpg"><br>
+		<img class="lazy" data-original="img/m1.jpg"><br>
+		<img class="lazy" data-original="img/m2.jpg"><br>
+		<img class="lazy" data-original="img/m3.jpg"><br>
+		<img class="lazy" data-original="img/m4.jpg"><br>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script type="text/javascript" src="js/jquery.lazyload.js"></script>
+	<script>
+		$(function(){
+			$('img.lazy').lazyload({
+				threshold : 10, //把阀值设置成100，表示当没有看到之前先load 100像素。
+				placeholder : 'img/m1.jpg', // 设置占位图片
+                effect: 'fadeIn' // 设置图片显示效果
+			});
+		});
+		/*
+		*还可以设置触发事件 event:'click'
+		*还存在以下几个不足：
+		*1、与Ajax技术冲突
+		*2、图片的延迟加载，遇到高度特别高的图片，会出现加载停止的问题
+		**/
+	</script>
+	
+</html>

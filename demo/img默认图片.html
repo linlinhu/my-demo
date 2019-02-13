@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>img默认图片</title>
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<button onclick="fun()">点击</button>
+		<div id = 'box'></div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script>
+		function fun(){
+			var html = "<img src = \"../images/img_qrcode_logo.pn\" onerror= \"this.src='../images/pic.jpg'\" />"
+			$('#box').html(html)
+		}
+		(^[1-9]{1}[0-9]{0,4}([.]+[0-9]{1,2})?)([dymDYM]{1}$)|([dymDYM]{1}[+]{1}[a-zA-Z]$)|([dymDYM]{1}[+]{1}[1-9]{1}[0-9]{0,4}([.]+[0-9]{1,2})?[dymDYM]{1}$)
+	</script>
+</html>

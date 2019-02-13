@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>demo</title>
+		<style type="text/css">
+			li{
+				list-style: none;
+			}
+			.mySelect {
+				position: relative;
+				border:1px solid #ccc;
+			}
+			.myInput  input{
+				border:0;
+				border-right: 1px solid #ccc;
+			}
+			.myOption {
+				position: absolute;
+			}
+			.hide{
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div>  
+            <select id="select" style="width:150px;height:21px;" onchange="a()">  
+                <option value="1">爬楼高手</option>  
+                <option value="2">隔壁老尤条</option>  
+            </select>  
+            <input id="_input" style="width:130px;height:15px;margin-left:-157px;"  type="text"  />  
+        </div>  
+        <input type="button" onclick="b()" style="margin-top: 10px;margin-left: 100px;" value="显示值" />
+        <div class="mySelect">
+        	<div class="myInput">
+        		<input type="text" name="input">
+        		<i onclick="switchOption()">向下</i>
+        	</div>
+        	<ul class="myOption"></ul>
+        </div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script>
+		
+
+        var optionList = [{name:"第一个",id:1},{name:"第2个",id:2},{name:"第3个",id:3}];
+
+        initSelect(optionList);
+
+        function initSelect(list) {
+        	var html='', i;
+
+        	console.log(list)
+        	for(i = 0; i < list.length; i++) {
+        		html += '<li>'+
+        				'<span value="' + list[i].name+'" onclick="chooseOption(\'' + list[i].name + '\')">' + list[i].name + '</span>'+
+        				'<i onclick="deleteOption(' + list[i].id + ')">删除</i></li>'
+        	}
+        	$('.myOption').html(html)
+        };
+        function a() {  
+            $("#_input").val($("#select option:selected").text());  
+        } 
+
+        function b(){  
+            alert($("#_input").val());
+        }
+
+        function chooseOption(name){
+        	console.log(name);
+        	$('.myInput input').val(name);
+        };
+        function deleteOption(id){
+        	console.log(id);
+        	for(var i = 0; i < optionList.length; i++){
+        		if(id == optionList[i].id) {
+        			optionList.splice(i,1)
+        		}
+        	}
+        	$(this).parent().remove();
+        	console.log(optionList);
+        	initSelect(optionList);
+        };
+        function switchOption(){
+        	if($('.myOption').hasClass('hide')) {
+        		$('.myOption').removeClass('hide');
+        	} else {
+        		$('.myOption').addClass('hide');
+        	}
+        }
+    </script>
+</html>

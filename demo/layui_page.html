@@ -1,0 +1,278 @@
+
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>layPage官网 - 多场景JavaScript分页组件</title>
+<meta name="keywords" content="分页插件,ajax分页,异步分页">
+<meta name="description" content="laypage是一款多功能的js分页组件，主要应用于前端页面Ajax普通分页以及信息流加载，并且可无缝迁移至Node.js平台。laypage不依赖于任何第三方库，直接拿来用即可，它的接口继承了layui系列组件的一贯简洁，极易上手。那么，从现在开始，将分页的任务交给laypage吧！">
+
+<link rel="stylesheet" href="css/layui.css" media="all">
+<link rel="stylesheet" href="css/global.css" media="all">
+
+<!--<link href="demo.css" type="text/css" rel="stylesheet">-->
+
+<script src="js/laypage.js" tips="使用时，只要这一个js即可"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="layui-main">
+  <a class="logo" href="http://www.layui.com">
+    <img src="//res.layui.com/images/layui/logo.png" alt="layui">
+  </a>
+  <span class="menu">
+    <a href="http://www.layui.com/alone/" class="this">独立组件</a>
+    <a href="http://fly.layui.com">社区</a>
+  </span>
+  </div>
+</div>
+
+<div class="laybanner">
+  <div class="box">
+  <h1 title="layPage - 多场景JavaScript分页组件">layPage - 多场景JavaScript分页组件</h1>
+  </div>
+</div>
+<div class="laynav">
+  <div class="box">
+  <a href="http://sentsin.com/layui/laypage/" class="thianav">首页</a>
+  <a href="//www.layui.com/doc/modules/laypage.html" id="demoss">基础文档</a>
+  <a href="https://www.npmjs.com/package/laypage" target="_blank">Node.js版</a>
+  <a href="http://layim.layui.com?from=laypage" target="_blank">
+    捐赠获得LayIM
+  </a>
+  <div class="git"><a href="https://github.com/sentsin/laypage" target="_blank">Fork on GitHub</a></div>
+  </div>
+</div>
+
+<div class="laymain">
+  <div class="box">
+
+  <p class="laytext" style="padding-right:210px;">   layPage是一款多功能的js分页组件，即适用于异步分页，又可用于传统的整页刷新跳页，还支持信息流加载，并且可无缝迁移至Node.js平台。layPage不依赖于任何第三方库，直接拿来用即可，它的接口继承了layui系列组件的一贯简洁，极易上手。那么，从现在开始，将一切分页的任务交给layPage吧！
+    <a href="//res.layui.com/download/laypage-v1.3.zip"  class="layicon laydown" target="_blank" id="layDowns">
+    <img src="//res.layui.com/images/layui//laydown.png" alt="绿色下载组件">
+    <cite class="downintro">
+      版本：<script>document.write(laypage.v)</script>（2015-10-15）
+    </cite>
+    </a>
+  </p>
+  <h2 style="margin:10px 0;">先看个实例</h2>
+  
+  <div>
+    <!-- 通用-970*90 -->
+    <ins class="adsbygoogle"
+    style="display:inline-block;width:970px;height:90px"
+    data-ad-client="ca-pub-6111334333458862"
+    data-ad-slot="6835627838"></ins>
+  </div>
+
+
+  <div id="page1" style="margin-top:5px; text-align:center;"></div>
+  <div id="view1" style="padding-top:10px; text-align:center;"></div>
+  <pre class="layui-code" title="默认版对应代码"><span>//以下将以jquery.ajax为例，演示一个异步分页
+function demo(curr){
+  $.getJSON('test/demo1.json', {
+    page: curr || 1 //向服务端传的参数，此处只是演示
+  }, function(res){
+    //此处仅仅是为了演示变化的内容
+    var demoContent = (new Date().getTime()/Math.random()/1000)|0;
+    document.getElementById('view1').innerHTML = res.content + demoContent;
+    //显示分页
+    laypage({
+      cont: 'page1', //容器。值支持id名、原生dom对象，jquery对象。【如该容器为】：<code><</code>div id="page1"><code><</code>/div>
+      pages: res.pages, //通过后台拿到的总页数
+      curr: curr || 1, //当前页
+      jump: function(obj, first){ //触发分页后的回调
+        if(!first){ //点击跳页触发函数自身，并传递当前页：obj.curr
+          demo(obj.curr);
+        }
+      }
+    });
+  });
+};
+//运行
+demo();
+</span></pre>
+
+  
+  <h2 style="margin:10px 0;">整页刷新式跳转</h2>
+  <div id="page11" style="margin-top:5px; text-align:center;"></div>
+  <pre class="layui-code" title="默认版对应代码"><span>//好像很实用的样子，后端的同学再也不用写分页逻辑了。
+laypage({
+  cont: 'page11',
+  pages: 18, //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18
+  curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取
+    var page = location.search.match(/page=(\d+)/);
+    return page ? page[1] : 1;
+  }(), 
+  jump: function(e, first){ //触发分页后的回调
+    if(!first){ //一定要加此判断，否则初始时会无限刷新
+      location.href = '?page='+e.curr;
+    }
+  }
+});
+</span></pre>
+  
+
+  <h2 style="margin:10px 0;">自定义皮肤</h2>
+  <div id="page2" style="text-align:center;"></div>
+  <pre class="layui-code"><span>laypage({
+  cont: document.getElementById('page2'), //容器。值支持id名、原生dom对象，jquery对象,
+  pages: 100, //总页数
+  skin: 'yahei', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+  groups: 7 //连续显示分页数
+});</span></pre>
+
+  <h2 style="margin:10px 0;">开启跳页</h2>
+  <div id="page3" style="text-align:center;"></div>
+  <pre class="layui-code"><span>laypage({
+  cont: $('#page3'), //容器。值支持id名、原生dom对象，jquery对象,
+  pages: 100, //总页数
+  skip: true, //是否开启跳页
+  skin: '#AF0000',
+  groups: 3 //连续显示分页数
+});</span></pre>
+
+  <h2 style="margin:10px 0;">自定义文本</h2>
+  <div id="page4" style="text-align:center;"></div>
+  <pre class="layui-code"><span>laypage({
+  cont: 'page4', //容器。值支持id名、原生dom对象，jquery对象,
+  pages: 11, //总页数
+  skin: 'molv', //皮肤
+  first: 1, //将首页显示为数字1,。若不显示，设置false即可
+  last: 11, //将尾页显示为总页数。若不显示，设置false即可
+  prev: '<', //若不显示，设置false即可
+  next: '>' //若不显示，设置false即可
+});</span></pre>
+
+  <h2 style="margin:10px 0;">隐藏首页和尾页</h2>
+  <div id="page5" style="text-align:center;"></div>
+  <pre class="layui-code"><span>laypage({
+  cont: 'page5', //容器。值支持id名、原生dom对象，jquery对象,
+  pages: 11, //总页数
+  first: false,
+  last: false
+});</span></pre>
+
+  <h2 style="margin:10px 0;">开启hash</h2>
+  <div id="page6" style="text-align:center;"></div>
+  <div id="view6" style="padding-top:10px; text-align:center;"></div>
+  <pre class="layui-code"><span>laypage({
+  cont: 'page6', //容器。值支持id名、原生dom对象，jquery对象,
+  pages: 68, //总页数
+  curr: location.hash.replace('#!fenye=', ''), //获取hash值为fenye的当前页
+  hash: 'fenye', //自定义hash值
+    jump: function(obj){
+    $('#view6').html('看看URL的变化。通过hash，你可以记录当前页。当前正处于第'+obj.curr+'页');
+  }
+});</span></pre>
+  
+  <h2 style="margin:10px 0;">只出现上一页/下一页</h2>
+  <div id="view7" style="padding-bottom:10px; text-align:center;"></div>
+  <div id="page7" style="text-align:center;"></div>
+  <pre class="layui-code"><span>laypage({
+  cont: 'page7', //容器。值支持id名、原生dom对象，jquery对象,
+  pages: 11, //总页数
+  groups: 0,
+  first: false,
+  last: false,
+  jump: function(obj){
+    $('#view7').html('目前正在第'+ obj.curr +'页，一共有：'+ obj.pages +'页');
+  }
+});</span></pre>
+
+  <h2 style="margin:10px 0;">信息流</h2>
+  <div id="view8" style="padding-top:10px; text-align:center;"></div>
+  <div id="page8" class="demoflow" style="margin-bottom:10px; text-align:center;">加载更多</div>
+  
+  <pre class="layui-code"><span>laypage({
+  cont: 'page8', //容器。值支持id名、原生dom对象，jquery对象,
+  pages: 7, //总页数
+  groups: 0, //连续分数数0
+  prev: false, //不显示上一页
+  next: '查看更多',
+  skin: 'flow', //设置信息流模式的样式
+  jump: function(obj){
+    if(obj.curr === 6){
+      this.next = '没有更多了';
+    }
+    $('#view8').append(appendimg(obj.curr));
+  }
+});</span></pre>
+
+  <h2 style="margin:10px 0;">将一段数组分页显示</h2>
+  <style>
+  #biuuu_city_list{margin: 15px 0;}
+  </style>
+  <ul id="biuuu_city_list"></ul>
+  <div id="biuuu_city"></div>
+  <pre class="layui-code"><span>//测试数据
+  var data = [
+    '北京',
+    ,'……'
+  ];
+
+  var nums = 5; //每页出现的数量
+
+  //模拟渲染
+  var render = function(data, curr){
+    var arr = []
+    ,thisData = data.concat().splice(curr*nums-nums, nums);
+    for(var i = 0; i < thisData.length; i++){
+      arr.push('&lt;li>'+ thisData[i] +'&lt;/li>');
+    }
+    return arr.join('');
+  };
+
+  //调用分页
+  laypage({
+    cont: 'biuuu_city'
+    ,pages: Math.ceil(data.length/nums) //得到总页数
+    ,jump: function(obj){
+      document.getElementById('biuuu_city_list').innerHTML = render(data, obj.curr);
+    }
+  });
+</span></pre>
+</div>
+
+<div class="layer-footer">
+  <p>贤心出品 - <a href="http://sentsin.com/" target="_blank">sentsin.com</a></p>
+  <p>
+  <span><a href="http://sentsin.com/cooperation.html">广告合作</a></span>
+  <span><a href="http://weibo.com/SentsinXu" rel="nofollow" target="_blank">微博</a></span>
+  <span><a href="http://fly.layui.com/" target="_blank">Fly社区</a></span>
+  </p>
+</div>
+
+
+<a href="javascript:;" class="laygotop" id="laygotop"></a>
+<div style="height:50px;"></div>
+
+
+<!-- 无视下面所有的js，全是服务于demo -->
+
+<!--<script src="//cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+
+<script src="//res.layui.com/lay/lib/layer/build/layer.js"></script>
+
+<script src="//res.layui.com/lay/lib/laycode/laycode.min.js"></script>
+<script src="demo.js"></script>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
+<script>
+var i = 0, len = $('.adsbygoogle').length;
+for(; i < len; i++){
+  (adsbygoogle = window.adsbygoogle || []).push({});
+}
+</script>
+
+
+
+<!--<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+-->
+</body>
+</html>
+
+
+

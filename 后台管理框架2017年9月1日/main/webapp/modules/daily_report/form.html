@@ -1,0 +1,134 @@
+
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>${dataModel.name!''}-添加</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('index')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+               		<#list dataModel.groups as group>
+                		<#if group_index==0>
+	                    <form method="get" class="form-horizontal" id="dailyReportForm">
+	                    
+							<#list group.items as item>
+	                        <div class="form-group">
+	                            <label class="col-sm-2 control-label">${item.name}</label>
+	                            <div class="col-sm-10">
+	                            <#switch item.type>
+									<#case 1>
+										<input class="form-control" type="text" type-id="1" name="${item.itemToken}" value="${item.value!''}">
+										<#break>
+									<#case 2>
+										<textarea class="form-control" type-id="2" name="${item.itemToken}" rows="6">${item.value!''}</textarea>	
+										<#break>
+									<#default>
+								</#switch>
+	                            </div>
+	                        </div>
+	                        <div class="hr-line-dashed"></div>
+	                        </#list>
+	                        <div class="form-group">
+	                            <div class="col-sm-4 col-sm-offset-2">
+	                                <button class="btn btn-primary" type="submit">保存内容</button>
+	                            </div>
+	                        </div>
+	                    </form>
+	                    
+                   		</#if>
+                	</#list>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+var i = 0,
+	loading = null,
+	serializeObj = {},
+	convertObj = {},
+	submitArr = [],
+	icon = "<i class='fa fa-times-circle'></i> ",
+	rules = {},
+	messages = {},
+	td = new Date(),
+	year = td.getFullYear(),
+	month = td.getMonth()+1,
+	day = td.getDate(),
+	tdStr = year + (month < 10 ? ('0' + month) : month) + (day < 10 ? ('0' + day) : day) + '工作日报';
+	
+$('#dailyReportForm input').eq(0).val(tdStr);
+$('#dailyReportForm input').eq(0).attr("readOnly",true); 
+	<#list dataModel.groups as group>
+	<#if group_index==0>
+<#list group.items as item>
+rules['${item.itemToken}'] = {
+   	required: ${item.required?string('true','false')},
+   	<#if item.regex??>
+   	regex: '${item.reqex}',
+   	</#if>
+	maxlength:500
+};
+messages['${item.itemToken}'] = {
+   	required: icon + '请输入${item.name}',
+   	<#if item.regex??>
+   	regex: icon + '${item.name}不符合输入规范',
+   	</#if>
+	maxlength:icon + '${item.name}必需500字符以下'
+}
+</#list>
+</#if>
+</#list>	
+$('#dailyReportForm').validate({
+    rules: rules,
+    messages: messages,
+    submitHandler:function(form){
+    	loading = layer.load();
+    	submitArr = [];
+    	serializeObj = $('#dailyReportForm').serializeObject();
+    	for(i in serializeObj) {
+       		convertObj = {};
+       		convertObj['token'] = i;
+       		var value = serializeObj[i];
+       		value = value.replace(/\r/g, "").replace(/\n/g, "huanhang");
+       		convertObj['value'] = value;
+       		convertObj['type'] = $('#dailyReportForm .form-control[name="' + convertObj['token'] + '"]').attr('type-id');
+       		submitArr.push(convertObj);
+       	}
+		submitArr.push({
+			type: 1,
+			token: 'account',
+			value: '${user.account}'
+		});
+		submitArr.push({
+			type: 1,
+			token: 'email',
+			value: '${user.email}'
+		});
+    	$.ajax({
+        	type:"post",
+        	url:'${base}logdata/dataSubmit',
+        	data: {
+        		modelId: ${dataModel.id},
+        		data: JSON.stringify(submitArr)
+        	},
+        	success:function(data){
+        		layer.close(loading);
+        		data = JSON.parse(data);
+        		if (!data.success) {
+        			layer.alert(data.message ? data.message : '保存失败',{icon: 5});
+        		} else {
+        			goPage('index');
+        		}
+        	}
+        })
+    }     
+});
+
+</script>

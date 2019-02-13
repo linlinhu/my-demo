@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="UTF-8">
+		<title>面向对象</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" ></script>
+	<script>
+		// 属性访问器
+		var book = {
+			_year: 2004,
+			edition: 1
+		};
+		Object.defineProperty(book, "year", {
+			get: function() {
+				return this._year;
+			},
+			set: function(newValue) {
+				if (newValue > 2005) {
+					this._year = newValue;
+					edition = newValue - 2004;
+				}
+			}
+		});
+		console.log(book._year,book.edition,book.year);
+		book.year = 2006;
+		console.log(book._year,book.edition,book.year);
+
+		//工厂模式
+		function createPerson(name, age, job) {
+			var o = new Object();
+			o.name = name;
+			o.age = age;
+			o.job = job;
+			o.sayName = function() {
+				console.log(this.name)
+			};
+			return o;
+		};
+		person1 = createPerson('小明', 29, 'teacher');
+		person2 = createPerson('韩梅梅', 20, 'doctor');
+		person1.sayName();
+		console.log(person2.job);
+
+		//构造函数模式
+		function Person(name, age, job) {
+			this.name = name;
+			this.age = age;
+			this.job = job;
+			this.sayName = function() {
+				console.log(this.name);
+			};
+		};
+		Person.prototype.add = "成都";
+		person3 = new Person("不满意", 18, "student");
+		person3.add = '遂宁';
+		person4 = new Person("不稀奇", 19, "student");
+		person3.sayName();
+		// console.log(person3.add);
+		// console.log(person4.add);
+		// console.log(person3.hasOwnProperty('add'));
+		// console.log(person4.hasOwnProperty('add'));
+		// console.log(person3.constructor == Person);
+		// console.log(person3 instanceof Person);
+		// console.log(person3 instanceof createPerson);
+		// console.log(person3 instanceof Object);
+		// console.log(Person.prototype.isPrototypeOf(person3))
+
+		//原型与in操作符
+		console.log("age" in person3);
+		console.log("add" in person3);
+
+		for (var prop in person4){
+			console.log(prop)
+		};
+		var keys = Object.keys(person3);
+		console.log(keys);
+
+		function Dog() {
+
+		};
+		var dog1 = new Dog();
+
+		Dog.prototype = {
+			name :  "小黑",
+			age : "1"
+		};
+
+	
+
+		console.log(dog1.name);
+		console.log(dog1.constructor == Dog);
+		Dog.prototype.like = "吃肉";
+		console.log(dog1.like)
+		localStorage.clear();
+
+		// 混合模式
+		function Student(name, age, add) {
+			this.name = name;
+			this.age = age;
+			this.add = add;
+			this.friends = ['Danica','Herry'];
+		};
+		Student.prototype = {
+			constructor : Student,
+			sayName : function(){
+				console.log(this.name);
+			}
+		};
+		var Winnie = new Student('Winnie', 18, '成都');
+		var cooler = new Student('cooler', 19, '杭州');
+		Winnie.sayName();
+		cooler.friends.push('Linda');
+		console.log(cooler.friends);
+		console.log(Winnie.friends);
+
+		// 动态原型模式
+		function animal(name, type, age) {
+			this.name = name;
+			this.type = type;
+			this.age = age;
+			if(typeof this.sayName != 'function') {
+				console.log("需要创建原型方法");
+				animal.prototype.sayName = function() {
+					console.log('我是'+this.name+',是一只'+this.type)
+				}
+			}
+		};
+		var mimi = new animal('喵喵', '猫', 2),
+			wangwang = new animal('汪汪', '狗', 1);
+		mimi.sayName();
+		wangwang.sayName();
+
+		// 原型链
+		function SuperType() {
+			this.property = true;
+		};
+		SuperType.prototype.getSuperValue = function(){
+			return this.property;
+		};
+		function SubType() {
+			return this.subproperty = false;
+		};
+		SubType.prototype = new SuperType(); // 继承了SuperType
+		SubType.prototype.getSubValue = function() {
+			return this.subproperty;
+		};
+		var instance = new SubType();
+		console.log(instance.getSuperValue());
+
+		//借用构造函数
+
+		function Colors(time) {
+			this.colors = ['red', 'blue', 'green'];
+			this.time = time;
+		}
+
+		function SubColors() {
+			Colors.call(this, '2017.07');
+			this.address = '成都';
+		}
+
+		var instance1 = new SubColors(),
+			instance2 = new SubColors();
+
+		instance1.colors.push('black');
+		console.log(instance1.colors,instance1.time,instance1.address);
+		console.log(instance2.colors);
+	</script>
+</html>

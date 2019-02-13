@@ -1,0 +1,89 @@
+<style>
+	.loginPage{
+		padding-top:0;
+	}
+
+</style>
+<div class="pages navbar-fixed toolbar-fixed loginPage">
+	<div data-page="login" class="page">
+		<div class="navbar">
+      <div class="navbar-inner">
+        <div class="center">Awesome App</div>
+      </div>
+    </div>
+		<div class="page-content">
+			<form id="my-form">
+				<div class="center">Name</div>
+				<div class="list-block">
+					<ul>
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+								  <div class="item-title label">Name</div>
+								  <div class="item-input">
+										<input  class="form-control" type="text" name="name" placeholder="Your name">
+								  </div>
+								</div>
+							</div>
+						</li>
+						<li>
+						  <div class="item-content">
+								<div class="item-inner">
+								  <div class="item-title label">Password</div>
+								  <div class="item-input">
+										<input  class="form-control" type="text" name="password" placeholder="Your password">
+								  </div>
+								</div>
+						  </div>
+						</li>
+					</ul>
+					<div class="content-block">
+						<div class="row">
+							<p class="button button-big button-fill color-green loginSub" >提交</p>
+						</div>
+					</div>
+				</div>
+			</form>     
+		</div>
+	</div>
+</div>
+   
+    <!--<script src="js/validate/jquery.validate.min.js"></script>
+    <script src="js/validate/messages_zh.min.js"></script>
+    <script src="js/validate/compatible_bootstrap.js"></script>
+    <script src="js/validate/validate_method.js"></script>-->
+    <!--<script>
+    		$$("#my-form input[name='name']").val('winnie');
+    		
+    			$("#my-form").validate({
+			        rules: {
+			        		name: {
+			                required: true,
+			                rangelength: [3,20]
+			            },
+			            password: {
+			                required: true,
+			                rangelength: [6,20],
+			            }
+			        },
+			        messages: {
+			        	name: {
+			                required: "请输入用户名",
+			                rangelength: "用户名输入长度必须介于3和20之间"
+			            },
+			            password: {
+			                required:  "请输入密码",
+			                rangelength: "密码输入长度必须介于6和20之间"
+			            }
+			        },
+			        submitHandler:function(form){
+			        	 var formData = myApp.formToJSON('#my-form');
+			        	 /*	window.location.href('index.html')*/
+  							/*mainView.router.loadPage('index.html')*/
+  										
+			        	
+			        } 
+				});
+		
+    		
+    </script>-->
